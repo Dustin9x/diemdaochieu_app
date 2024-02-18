@@ -1,4 +1,5 @@
 import 'package:diemdaochieu_app/screens/articles_screen.dart';
+import 'package:diemdaochieu_app/screens/notification_screen.dart';
 import 'package:diemdaochieu_app/screens/profile_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -25,12 +26,15 @@ class _TabsScreenState extends ConsumerState<TabsScreen> {
   Widget build(BuildContext context) {
     Widget activePage = const ArticlesScreen();
 
-
-    if (_selectPageIndex == 1) {
-      activePage = const ArticlesScreen();
-    }
-    if (_selectPageIndex == 2) {
-      activePage = const ProfileScreen();
+    switch (_selectPageIndex) {
+      case 0:
+        activePage = const ArticlesScreen();
+        break;
+      case 1:
+        activePage = const NotificationScreen();
+        break;
+      case 2:
+        activePage = const ProfileScreen();
     }
 
     return Scaffold(
@@ -38,14 +42,35 @@ class _TabsScreenState extends ConsumerState<TabsScreen> {
       bottomNavigationBar: BottomNavigationBar(
         onTap: _selectPage,
         currentIndex: _selectPageIndex,
-        items: const [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.dashboard),
-            label: 'Thị trường',
-          ),
+        items: [
           BottomNavigationBarItem(
             icon: Icon(Icons.article),
-            label: 'Trang chủ',
+            label: 'Tin tức',
+          ),
+          BottomNavigationBarItem(
+            activeIcon: Align(
+              alignment: Alignment.bottomCenter,
+              child: Container(
+                decoration: BoxDecoration(
+                  color: Theme.of(context).colorScheme.primary,
+                  shape: BoxShape.circle,
+                ),
+                padding: const EdgeInsets.all(12),
+                child: Icon(Icons.notifications, color: Theme.of(context).colorScheme.primaryContainer),
+              ),
+            ),
+            icon: Align(
+              alignment: Alignment.bottomCenter,
+              child: Container(
+                decoration: BoxDecoration(
+                  color: Theme.of(context).colorScheme.secondary,
+                  shape: BoxShape.circle,
+                ),
+                padding: const EdgeInsets.all(12),
+                child: const Icon(Icons.notifications, color: Colors.white),
+              ),
+            ),
+            label: '',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.person),
