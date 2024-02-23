@@ -9,7 +9,7 @@ final theme = ThemeData(
   colorScheme: ColorScheme.fromSeed(
     seedColor: const Color.fromARGB(255, 255, 199, 1),
   ),
-  textTheme: GoogleFonts.lexendTextTheme(),
+  textTheme: GoogleFonts.interTextTheme(),
 );
 
 void main() {

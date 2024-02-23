@@ -1,8 +1,11 @@
+import 'package:flutter/material.dart';
+import 'package:enefty_icons/enefty_icons.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+
 import 'package:diemdaochieu_app/screens/articles_screen.dart';
 import 'package:diemdaochieu_app/screens/notification_screen.dart';
 import 'package:diemdaochieu_app/screens/profile_screen.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+
 
 class TabsScreen extends ConsumerStatefulWidget {
   const TabsScreen({super.key});
@@ -14,7 +17,7 @@ class TabsScreen extends ConsumerStatefulWidget {
 }
 
 class _TabsScreenState extends ConsumerState<TabsScreen> {
-  int _selectPageIndex = 1;
+  int _selectPageIndex = 0;
 
   void _selectPage(int index) {
     setState(() {
@@ -44,8 +47,9 @@ class _TabsScreenState extends ConsumerState<TabsScreen> {
         currentIndex: _selectPageIndex,
         items: [
           BottomNavigationBarItem(
-            icon: Icon(Icons.article),
+            icon: Icon(EneftyIcons.document_text_outline),
             label: 'Tin tức',
+            activeIcon: Icon(EneftyIcons.document_text_bold)
           ),
           BottomNavigationBarItem(
             activeIcon: Align(
@@ -56,7 +60,7 @@ class _TabsScreenState extends ConsumerState<TabsScreen> {
                   shape: BoxShape.circle,
                 ),
                 padding: const EdgeInsets.all(12),
-                child: Icon(Icons.notifications, color: Theme.of(context).colorScheme.primaryContainer),
+                child: Icon(EneftyIcons.notification_bold, color: Theme.of(context).colorScheme.primaryContainer),
               ),
             ),
             icon: Align(
@@ -67,13 +71,14 @@ class _TabsScreenState extends ConsumerState<TabsScreen> {
                   shape: BoxShape.circle,
                 ),
                 padding: const EdgeInsets.all(12),
-                child: const Icon(Icons.notifications, color: Colors.white),
+                child: const Icon(EneftyIcons.notification_outline, color: Colors.white),
               ),
             ),
             label: '',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.person),
+            icon: Icon(EneftyIcons.user_outline),
+            activeIcon: Icon(EneftyIcons.user_bold),
             label: 'Của tôi',
           ),
         ],

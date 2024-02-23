@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:enefty_icons/enefty_icons.dart';
 
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({super.key});
@@ -94,7 +95,7 @@ class ProfileScreen extends StatelessWidget {
                               child: ElevatedButton.icon(
                                 style: const ButtonStyle(
                                     alignment: Alignment.centerLeft),
-                                icon: Icon(Icons.settings),
+                                icon: Icon(EneftyIcons.setting_2_outline),
                                 label: Text('Cài đặt ứng dụng'),
                                 onPressed: () {},
                               ),
@@ -104,7 +105,7 @@ class ProfileScreen extends StatelessWidget {
                               child: ElevatedButton.icon(
                                 style: const ButtonStyle(
                                     alignment: Alignment.centerLeft),
-                                icon: Icon(Icons.help_center),
+                                icon: Icon(EneftyIcons.message_question_outline),
                                 label: Text('Hướng dẫn sử dụng'),
                                 onPressed: () {},
                               ),
@@ -114,7 +115,7 @@ class ProfileScreen extends StatelessWidget {
                               child: ElevatedButton.icon(
                                 style: const ButtonStyle(
                                     alignment: Alignment.centerLeft),
-                                icon: Icon(Icons.check_circle),
+                                icon: Icon(EneftyIcons.tick_circle_outline),
                                 label: Text('Bình chọn'),
                                 onPressed: () {},
                               ),
@@ -124,7 +125,7 @@ class ProfileScreen extends StatelessWidget {
                               child: ElevatedButton.icon(
                                 style: const ButtonStyle(
                                     alignment: Alignment.centerLeft),
-                                icon: Icon(Icons.info),
+                                icon: Icon(EneftyIcons.info_circle_outline),
                                 label: Text('Về chúng tôi'),
                                 onPressed: () {},
                               ),
@@ -160,7 +161,7 @@ class ProfileScreen extends StatelessWidget {
                               child: ElevatedButton.icon(
                                 style: const ButtonStyle(
                                     alignment: Alignment.centerLeft),
-                                icon: Icon(Icons.chat),
+                                icon: Icon(EneftyIcons.message_outline),
                                 label: Text('Zalo: 0933 721 095'),
                                 onPressed: () {},
                               ),
@@ -170,7 +171,7 @@ class ProfileScreen extends StatelessWidget {
                               child: ElevatedButton.icon(
                                 style: const ButtonStyle(
                                     alignment: Alignment.centerLeft),
-                                icon: Icon(Icons.facebook),
+                                icon: Icon(Icons.facebook_outlined),
                                 label: Text('Fanpage: diemdaochieu'),
                                 onPressed: () {},
                               ),
@@ -180,7 +181,7 @@ class ProfileScreen extends StatelessWidget {
                               child: ElevatedButton.icon(
                                 style: const ButtonStyle(
                                     alignment: Alignment.centerLeft),
-                                icon: Icon(Icons.call),
+                                icon: Icon(EneftyIcons.call_outline),
                                 label: Text('Hotline: 0389 0787 69'),
                                 onPressed: () {},
                               ),
@@ -190,7 +191,7 @@ class ProfileScreen extends StatelessWidget {
                               child: ElevatedButton.icon(
                                 style: const ButtonStyle(
                                     alignment: Alignment.centerLeft),
-                                icon: Icon(Icons.email),
+                                icon: Icon(Icons.mail_outline),
                                 label: Text('Email: diemdaochieu@gmail.com'),
                                 onPressed: () {},
                               ),

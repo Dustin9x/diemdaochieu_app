@@ -37,6 +37,8 @@ dependencies:
   cupertino_icons: ^1.0.2
   google_fonts: ^6.1.0
   flutter_riverpod: ^2.4.10
+  appbar_animated: ^0.0.3
+  enefty_icons: ^1.0.7
 
 dev_dependencies:
   flutter_test:
