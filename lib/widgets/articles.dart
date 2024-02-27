@@ -1,4 +1,5 @@
 import 'package:diemdaochieu_app/screens/article_detail.dart';
+import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:enefty_icons/enefty_icons.dart';
 
@@ -8,14 +9,14 @@ class Articles extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      margin: EdgeInsets.only(left: 10, right: 10, top: 10),
+      margin: const EdgeInsets.only(left: 10, right: 10, top: 10),
       color: Colors.white,
       elevation: 0,
       child: InkWell(
         onTap: (){
-          Navigator.of(context).push(MaterialPageRoute(builder: (ctx) => ArticleDetail()));
+          Navigator.of(context).push(MaterialPageRoute(builder: (ctx) => const ArticleDetail()));
         },
-        child: Container(
+        child: SizedBox(
           width: double.infinity,
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -37,23 +38,23 @@ class Articles extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
+                      const Text(
                         'Nỗi lo tiền bạc khi Công chúa Nhật lấy thường dân Nỗi lo tiền bạc khi Công chúa Nhật lấy thường dân',
                         maxLines: 2,
                         overflow: TextOverflow.ellipsis,
                         softWrap: true,
                         style: TextStyle(fontWeight: FontWeight.w500),
                       ),
-                      SizedBox(height: 6),
+                      const SizedBox(height: 6),
                       Container(
                         padding: const EdgeInsets.symmetric(horizontal: 10),
                         decoration: BoxDecoration(
                             color:
                             Theme.of(context).colorScheme.primaryContainer,
                             borderRadius: BorderRadius.circular(50.0)),
-                        child: Text('DDC Trả phí', style: TextStyle(fontSize: 11),),
+                        child: const Text('DDC Trả phí', style: TextStyle(fontSize: 11),),
                       ),
-                      SizedBox(height: 6),
+                      const SizedBox(height: 6),
                       const Row(
                         children: [
                           Text('7 phut',style: TextStyle(fontSize: 11)),
@@ -62,7 +63,7 @@ class Articles extends StatelessWidget {
                           SizedBox(width: 4),
                           Text('99',style: TextStyle(fontSize: 11)),
                           SizedBox(width: 24),
-                          Icon(EneftyIcons.message_2_outline, size: 15.0),
+                          Icon(FluentIcons.comment_16_regular, size: 16.0),
                           SizedBox(width: 4),
                           Text('99',style: TextStyle(fontSize: 11)),
                         ],

@@ -8,9 +8,9 @@ class ProfileScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Của tôi'),
+        title: const Text('Của tôi'),
         actions: [
-          TextButton(child: Text('Đăng ký'), onPressed: () {}),
+          TextButton(child: const Text('Đăng ký'), onPressed: () {}),
           Padding(
             padding: const EdgeInsets.symmetric(
               horizontal: 12,
@@ -74,59 +74,59 @@ class ProfileScreen extends StatelessWidget {
               const SizedBox(height: 16),
               Container(
                 width: double.infinity,
-                margin: EdgeInsets.symmetric(horizontal: 10),
+                margin: const EdgeInsets.symmetric(horizontal: 10),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
+                    const Text(
                       'CÀI ĐẶT',
                       style: TextStyle(fontWeight: FontWeight.bold),
                     ),
                     Card(
                       elevation: 0,
                       color: Colors.white,
-                      margin: EdgeInsets.symmetric(horizontal: 0, vertical: 4),
+                      margin: const EdgeInsets.symmetric(horizontal: 0, vertical: 4),
                       child: Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: Column(
                           children: [
-                            Container(
+                            SizedBox(
                               width: double.infinity,
                               child: ElevatedButton.icon(
                                 style: const ButtonStyle(
                                     alignment: Alignment.centerLeft),
-                                icon: Icon(EneftyIcons.setting_2_outline),
-                                label: Text('Cài đặt ứng dụng'),
+                                icon: const Icon(EneftyIcons.setting_2_outline),
+                                label: const Text('Cài đặt ứng dụng'),
                                 onPressed: () {},
                               ),
                             ),
-                            Container(
+                            SizedBox(
                               width: double.infinity,
                               child: ElevatedButton.icon(
                                 style: const ButtonStyle(
                                     alignment: Alignment.centerLeft),
-                                icon: Icon(EneftyIcons.message_question_outline),
-                                label: Text('Hướng dẫn sử dụng'),
+                                icon: const Icon(EneftyIcons.message_question_outline),
+                                label: const Text('Hướng dẫn sử dụng'),
                                 onPressed: () {},
                               ),
                             ),
-                            Container(
+                            SizedBox(
                               width: double.infinity,
                               child: ElevatedButton.icon(
                                 style: const ButtonStyle(
                                     alignment: Alignment.centerLeft),
-                                icon: Icon(EneftyIcons.tick_circle_outline),
-                                label: Text('Bình chọn'),
+                                icon: const Icon(EneftyIcons.tick_circle_outline),
+                                label: const Text('Bình chọn'),
                                 onPressed: () {},
                               ),
                             ),
-                            Container(
+                            SizedBox(
                               width: double.infinity,
                               child: ElevatedButton.icon(
                                 style: const ButtonStyle(
                                     alignment: Alignment.centerLeft),
-                                icon: Icon(EneftyIcons.info_circle_outline),
-                                label: Text('Về chúng tôi'),
+                                icon: const Icon(EneftyIcons.info_circle_outline),
+                                label: const Text('Về chúng tôi'),
                                 onPressed: () {},
                               ),
                             ),
@@ -140,59 +140,59 @@ class ProfileScreen extends StatelessWidget {
               const SizedBox(height: 16),
               Container(
                 width: double.infinity,
-                margin: EdgeInsets.symmetric(horizontal: 10),
+                margin: const EdgeInsets.symmetric(horizontal: 10),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
+                    const Text(
                       'LIÊN HỆ',
                       style: TextStyle(fontWeight: FontWeight.bold),
                     ),
                     Card(
                       elevation: 0,
                       color: Colors.white,
-                      margin: EdgeInsets.symmetric(horizontal: 0, vertical: 4),
+                      margin: const EdgeInsets.symmetric(horizontal: 0, vertical: 4),
                       child: Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: Column(
                           children: [
-                            Container(
+                            SizedBox(
                               width: double.infinity,
                               child: ElevatedButton.icon(
                                 style: const ButtonStyle(
                                     alignment: Alignment.centerLeft),
-                                icon: Icon(EneftyIcons.message_outline),
-                                label: Text('Zalo: 0933 721 095'),
+                                icon: const Icon(EneftyIcons.message_outline),
+                                label: const Text('Zalo: 0933 721 095'),
                                 onPressed: () {},
                               ),
                             ),
-                            Container(
+                            SizedBox(
                               width: double.infinity,
                               child: ElevatedButton.icon(
                                 style: const ButtonStyle(
                                     alignment: Alignment.centerLeft),
-                                icon: Icon(Icons.facebook_outlined),
-                                label: Text('Fanpage: diemdaochieu'),
+                                icon: const Icon(Icons.facebook_outlined),
+                                label: const Text('Fanpage: diemdaochieu'),
                                 onPressed: () {},
                               ),
                             ),
-                            Container(
+                            SizedBox(
                               width: double.infinity,
                               child: ElevatedButton.icon(
                                 style: const ButtonStyle(
                                     alignment: Alignment.centerLeft),
-                                icon: Icon(EneftyIcons.call_outline),
-                                label: Text('Hotline: 0389 0787 69'),
+                                icon: const Icon(EneftyIcons.call_outline),
+                                label: const Text('Hotline: 0389 0787 69'),
                                 onPressed: () {},
                               ),
                             ),
-                            Container(
+                            SizedBox(
                               width: double.infinity,
                               child: ElevatedButton.icon(
                                 style: const ButtonStyle(
                                     alignment: Alignment.centerLeft),
-                                icon: Icon(Icons.mail_outline),
-                                label: Text('Email: diemdaochieu@gmail.com'),
+                                icon: const Icon(Icons.mail_outline),
+                                label: const Text('Email: diemdaochieu@gmail.com'),
                                 onPressed: () {},
                               ),
                             ),
@@ -208,7 +208,7 @@ class ProfileScreen extends StatelessWidget {
                   foregroundColor: Colors.red,
                 ),
                 onPressed: () {},
-                child: Text('Đăng xuất'),
+                child: const Text('Đăng xuất'),
               )
             ],
           ),

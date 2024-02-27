@@ -26,12 +26,12 @@ class _ArticlesScreenState extends State<ArticlesScreen> {
         child: SingleChildScrollView(
           child: Stack(
             children: [
-              FirstArticle(),
+              const FirstArticle(),
               Container(
                 margin: EdgeInsets.only(
                   top: MediaQuery.of(context).size.height * 0.375,
                 ),
-                child: Column(
+                child: const Column(
                   children: [
                     Articles(),
                     Articles(),

@@ -46,7 +46,7 @@ class _TabsScreenState extends ConsumerState<TabsScreen> {
         onTap: _selectPage,
         currentIndex: _selectPageIndex,
         items: [
-          BottomNavigationBarItem(
+          const BottomNavigationBarItem(
             icon: Icon(EneftyIcons.document_text_outline),
             label: 'Tin tức',
             activeIcon: Icon(EneftyIcons.document_text_bold)
@@ -76,7 +76,7 @@ class _TabsScreenState extends ConsumerState<TabsScreen> {
             ),
             label: '',
           ),
-          BottomNavigationBarItem(
+          const BottomNavigationBarItem(
             icon: Icon(EneftyIcons.user_outline),
             activeIcon: Icon(EneftyIcons.user_bold),
             label: 'Của tôi',

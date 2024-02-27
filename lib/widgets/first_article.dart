@@ -1,5 +1,5 @@
-import 'dart:ui';
 
+import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:enefty_icons/enefty_icons.dart';
 
@@ -45,19 +45,19 @@ class FirstArticle extends StatelessWidget {
                           SizedBox(width: 4),
                           Text('99'),
                           SizedBox(width: 24),
-                          Icon(EneftyIcons.message_2_outline, size: 18.0),
+                          Icon(FluentIcons.comment_16_regular, size: 18.0),
                           SizedBox(width: 4),
                           Text('99'),
                         ],
                       ),
-                      Spacer(),
+                      const Spacer(),
                       Container(
                         padding: const EdgeInsets.symmetric(horizontal: 10),
                         decoration: BoxDecoration(
                             color:
                                 Theme.of(context).colorScheme.primaryContainer,
                             borderRadius: BorderRadius.circular(50.0)),
-                        child: Text('DDC Trả phí'),
+                        child: const Text('DDC Trả phí'),
                       )
                     ],
                   ),
@@ -76,10 +76,10 @@ class FirstArticle extends StatelessWidget {
                     foregroundDecoration: const BoxDecoration(
                       gradient: LinearGradient(
                         colors: [
-                          Colors.black,
+                          Colors.black54,
                           Colors.transparent,
                           Colors.transparent,
-                          Colors.black
+                          Colors.black54
                         ],
                         begin: Alignment.topCenter,
                         end: Alignment.bottomCenter,
@@ -94,7 +94,7 @@ class FirstArticle extends StatelessWidget {
                 ),
                 Container(
                   height: 240,
-                  padding: EdgeInsets.all(10),
+                  padding: const EdgeInsets.all(10),
                   alignment: Alignment.bottomLeft,
                   child: const Text(
                     'Trung Quốc gọi lệnh trừng phạt của Mỹ “Điên Rồ”. Tổng thống Biden lên tiếng phản bác tình hình trên bằng cách triệu tập hội',
