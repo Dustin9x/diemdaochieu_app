@@ -1,18 +1,15 @@
-import 'package:diemdaochieu_app/widgets/notifications/buysell_noti_tab.dart';
-import 'package:diemdaochieu_app/widgets/notifications/general_noti_tab.dart';
-import 'package:diemdaochieu_app/widgets/notifications/realtime_noti_tab.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 
-class NotificationScreen extends ConsumerStatefulWidget {
-  const NotificationScreen({super.key});
+class SearchScreen extends ConsumerStatefulWidget {
+  const SearchScreen({super.key});
 
   @override
-  ConsumerState<NotificationScreen> createState() => _NotificationScreenState();
+  ConsumerState<SearchScreen> createState() => _SearchScreenState();
 }
 
-class _NotificationScreenState extends ConsumerState<NotificationScreen>
+class _SearchScreenState extends ConsumerState<SearchScreen>
     with SingleTickerProviderStateMixin {
   late TabController _tabController;
 
@@ -41,7 +38,7 @@ class _NotificationScreenState extends ConsumerState<NotificationScreen>
     return DefaultTabController(
       length: 3,
       child: Scaffold(
-          backgroundColor: const Color.fromARGB(10, 0, 0, 0),
+          backgroundColor: Colors.white.withOpacity(0.95),
           appBar: AppBar(
             backgroundColor: Colors.transparent,
             bottom: PreferredSize(
@@ -59,16 +56,13 @@ class _NotificationScreenState extends ConsumerState<NotificationScreen>
                   labelPadding: const EdgeInsets.symmetric(horizontal: 8),
                   labelStyle: const TextStyle(fontWeight: FontWeight.bold),
                   unselectedLabelStyle:
-                      const TextStyle(fontWeight: FontWeight.normal),
+                  const TextStyle(fontWeight: FontWeight.normal),
                   tabAlignment: TabAlignment.start,
                   dividerColor: Colors.transparent,
-                  // onTap: (index){
-                  //   print(index);
-                  // },
                   tabs: [
-                    myTab('Thông báo chung'),
-                    myTab('Realtime'),
+                    myTab('Cổ phiếu'),
                     myTab('Mua / Bán'),
+                    myTab('Bài viết'),
                   ],
                 ),
               ),
@@ -78,9 +72,9 @@ class _NotificationScreenState extends ConsumerState<NotificationScreen>
           body: TabBarView(
             controller: _tabController,
             children: const [
-              GeneralNoti(),
-              RealtimeNoti(),
-              BuySellNoti()
+              Text('a'),
+              Text('b'),
+              Text('c'),
             ],
           )),
     );
