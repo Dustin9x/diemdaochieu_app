@@ -92,7 +92,7 @@ class FirstArticle extends ConsumerWidget {
                           decoration: BoxDecoration(
                               color: (article['source'] == 'DDC Trả Phí') ? Theme.of(context).colorScheme.primaryContainer : Colors.black12,
                               borderRadius: BorderRadius.circular(50.0)),
-                          child: Text(article['source'],),
+                          child: Text(article['source'].length > 12 ? article['source'].substring(0, 12)+'...' : article['source'],),
                         ),
                       ],
                     ),

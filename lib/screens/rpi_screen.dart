@@ -1,12 +1,13 @@
+import 'package:diemdaochieu_app/modal/premium_request.dart';
 import 'package:diemdaochieu_app/services/RPIServices.dart';
 import 'package:diemdaochieu_app/services/articleServices.dart';
 import 'package:diemdaochieu_app/widgets/articles.dart';
 import 'package:diemdaochieu_app/widgets/rpi/rpi_tab.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:diemdaochieu_app/widgets/rpi/vn30_rpi_tab.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:gauge_indicator/gauge_indicator.dart';
-import 'package:intl/intl.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'dart:convert' show json, utf8;
 
 class RPIScreen extends ConsumerStatefulWidget {
   const RPIScreen({super.key});
@@ -57,9 +58,33 @@ class _RPIScreenState extends ConsumerState<RPIScreen>
     }
   }
 
-  _handleTabSelection() {
+  var storage = const FlutterSecureStorage();
+
+  _handleTabSelection() async {
     if (_tabController.indexIsChanging) {
-      setState(() {});
+      if (_tabController.index == 1){
+        var userInfo = await storage.read(key: 'user');
+        if(userInfo != null){
+          var userPackage = json.decode(userInfo!);
+          bool isPremium = userPackage['permissions'].contains('WEB_CLIENT') || userPackage['permissions'].contains('PAID_ARTICLE') || !userPackage['packages'].contains('FREE');
+          if(isPremium == false){
+            showDialog(context: context, builder: (BuildContext dialogContext){
+              return const PremiumRequestModal();
+            });
+            _tabController.index = 0;
+          }else{
+            setState(() {});
+          }
+        }else{
+          showDialog(context: context, builder: (BuildContext dialogContext){
+            return const PremiumRequestModal();
+          });
+          _tabController.index = 0;
+        }
+      }else{
+        setState(() {});
+      }
+
     }
   }
 
@@ -101,11 +126,7 @@ class _RPIScreenState extends ConsumerState<RPIScreen>
           Center(
             child: [
               const RPITab(),
-              Column(
-                children: [
-                  Text('second tab'),
-                ],
-              ),
+              const VN30RPITab()
             ][_tabController.index],
           ),
           const SizedBox(height: 12),

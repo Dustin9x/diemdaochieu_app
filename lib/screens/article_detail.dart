@@ -260,7 +260,7 @@ class _ArticleDetailState extends ConsumerState<ArticleDetail> {
                                 // Image border
                                 child: SizedBox.fromSize(
                                   child: Image.network(
-                                    articleDetail['createdBy']['imageUrl'],
+                                    articleDetail['createdBy']['imageUrl'] != null ? articleDetail['createdBy']['imageUrl'] : 'https://i.pravatar.cc/100',
                                     width: 40,
                                     height: 40,
                                     fit: BoxFit.cover,

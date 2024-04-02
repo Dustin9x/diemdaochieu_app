@@ -1,4 +1,5 @@
 import 'dart:convert' show json, utf8;
+import 'package:diemdaochieu_app/screens/article_detail.dart';
 import 'package:intl/intl.dart';
 import 'package:diemdaochieu_app/screens/login_screen.dart';
 import 'package:flutter/material.dart';
@@ -305,7 +306,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           icon:
                               const Icon(EneftyIcons.message_question_outline),
                           label: const Text('Hướng dẫn sử dụng'),
-                          onPressed: () {},
+                          onPressed: () {
+                            Navigator.of(context).push(MaterialPageRoute(
+                                builder: (ctx) => const ArticleDetail(
+                                    articleId: 801
+                                )));
+                          },
                         ),
                       ),
                       SizedBox(

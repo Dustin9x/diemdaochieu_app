@@ -18,30 +18,28 @@ class ArticlesScreen extends ConsumerStatefulWidget {
 }
 
 class _ArticlesScreenState extends ConsumerState<ArticlesScreen> {
-
-  final ScrollController _controller = ScrollController();
-  int size = 35;
-
-@override
-  void initState() {
-    super.initState();
-    _controller.addListener(handleScrolling);
-  }
-
-  void handleScrolling() {
-    if (_controller.offset >= _controller.position.maxScrollExtent - 200) {
-      setState(() {
-        size += 10;
-      });
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
+    ScrollController controller;
+    int size = 35;
     Future<void> onRefresh() {
       return ref.refresh(articleProvider).getArticles(35);
     }
     final data = ref.watch(articlesDataProvider(size));
+
+    // @override
+    // void initState() {
+    //   super.initState();
+    //   controller = ScrollController()..addListener(handleScrolling);
+    // }
+    //
+    // void handleScrolling() {
+    //   if (controller.offset >= controller.position.maxScrollExtent) {
+    //     setState(() {
+    //       size += 10;
+    //     });
+    //   }
+    // }
 
     return RefreshIndicator(
       onRefresh: onRefresh,
@@ -50,63 +48,34 @@ class _ArticlesScreenState extends ConsumerState<ArticlesScreen> {
         body: data.when(
           data: (data) {
             List<dynamic> articleList = data.map((e) => e).toList();
-            List<dynamic> list1 = articleList.sublist(0, 5);
-            List<dynamic> list2 = articleList.sublist(5);
 
             return ScaffoldLayoutBuilder(
               backgroundColorAppBar:
                   const ColorBuilder(Colors.transparent, Colors.white),
               textColorAppBar: const ColorBuilder(Colors.white, Colors.black),
               appBarBuilder: _appBar,
-              child: CustomScrollView(
-                  controller: _controller,
-                slivers:[
-                  SliverList(
-                    delegate: SliverChildListDelegate([
-                      FirstArticle(
-                        article: articleList[0],
+              child: SingleChildScrollView(
+                child: Stack(
+                  children: [
+                    FirstArticle(
+                      article: articleList[0],
+                    ),
+                    Container(
+                      margin: EdgeInsets.only(
+                        top: MediaQuery.of(context).size.height * 0.375,
                       ),
-                    ]),
-                  ),
-                  SliverList(
-                      delegate: SliverChildBuilderDelegate((_, index) {
-                        return Articles(article: list1[index]);
-                      }, childCount: list1.length),
-                  ),
-                  SliverList(
-                    delegate: SliverChildListDelegate([
-                      const PremiumArticles(),
-                    ]),
-                  ),
-                  SliverList(
-                      delegate: SliverChildBuilderDelegate((_, index) {
-                        return Articles(article: list2[index]);
-                      }, childCount: list2.length)),
-                ]
-                // child: Stack(
-                //   children: [
-                //     FirstArticle(
-                //       article: articleList[0],
-                //     ),
-                //     Container(
-                //       margin: EdgeInsets.only(
-                //         top: MediaQuery.of(context).size.height * 0.375,
-                //       ),
-                //       child: ListView(
-                //         // mainAxisSize: MainAxisSize.min,
-                //         controller: controller,
-                //         shrinkWrap: true,
-                //         physics: ClampingScrollPhysics(),
-                //         children: <Widget>[
-                //           for (int i = 1; i < 5; i++) Articles(article: articleList[i]),
-                //           const SizedBox(height: 12,),
-                //           const PremiumArticles(),
-                //           for (int i = 5; i < articleList.length; i++) Articles(article: articleList[i]),
-                //         ],
-                //       ),
-                //     ),
-                //   ],
-                // ),
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: <Widget>[
+                          for (int i = 1; i < 5; i++) Articles(article: articleList[i]),
+                          const SizedBox(height: 12,),
+                          const PremiumArticles(),
+                          for (int i = 5; i < articleList.length; i++) Articles(article: articleList[i]),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
               ),
             );
           },

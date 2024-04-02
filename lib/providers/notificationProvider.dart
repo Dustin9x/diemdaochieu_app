@@ -1,4 +1,5 @@
-
+import 'package:diemdaochieu_app/services/notificationService.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 // class Params {
 //   final int page;
@@ -21,3 +22,7 @@
 // final notiRealtimeProvider = FutureProvider.family<dynamic,int>((ref,size) async {
 //   return ref.watch(notificationProvider).getNoficationRealtime(size);
 // });
+
+final getNotiCountProvider = FutureProvider<List<dynamic>>((ref) async {
+  return ref.watch(notificationProvider).getNotificationCount();
+});

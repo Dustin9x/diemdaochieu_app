@@ -51,6 +51,8 @@ dependencies:
   html: ^0.15.4
   flutter_html: ^3.0.0-alpha.3
   gauge_indicator: ^0.4.3
+  fl_chart: ^0.66.2
+  syncfusion_flutter_datepicker: ^25.1.37
 
 dev_dependencies:
   flutter_test:

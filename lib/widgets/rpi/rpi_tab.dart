@@ -1,7 +1,6 @@
+import 'package:diemdaochieu_app/screens/article_detail.dart';
 import 'package:diemdaochieu_app/services/RPIServices.dart';
-import 'package:diemdaochieu_app/services/notificationService.dart';
-import 'package:diemdaochieu_app/widgets/notifications/notification_item.dart';
-import 'package:fluentui_system_icons/fluentui_system_icons.dart';
+import 'package:diemdaochieu_app/widgets/rpi/rpi_history_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gauge_indicator/gauge_indicator.dart';
@@ -67,7 +66,12 @@ class RPITab extends ConsumerWidget {
                           width: 150, // <-- match_parent
                           height: 30, // <-- match-parent
                           child: ElevatedButton(
-                            onPressed: (){},
+                            onPressed: (){
+                              Navigator.of(context).push(MaterialPageRoute(
+                                  builder: (ctx) => ArticleDetail(
+                                    articleId: 163,
+                                  )));
+                            },
                             child: const Text('Tìm hiểu thêm'),
                           )
                       )
@@ -187,6 +191,7 @@ class RPITab extends ConsumerWidget {
               );
             },
           ),
+          const RPIHistoryChart(),
         ],
       ),
     );

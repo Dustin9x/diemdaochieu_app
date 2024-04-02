@@ -1,4 +1,7 @@
+import 'package:diemdaochieu_app/providers/notificationProvider.dart';
 import 'package:diemdaochieu_app/screens/rpi_screen.dart';
+import 'package:diemdaochieu_app/services/articleServices.dart';
+import 'package:diemdaochieu_app/services/notificationService.dart';
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:enefty_icons/enefty_icons.dart';
@@ -7,7 +10,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:diemdaochieu_app/screens/articles_screen.dart';
 import 'package:diemdaochieu_app/screens/notification_screen.dart';
 import 'package:diemdaochieu_app/screens/profile_screen.dart';
-
 
 class TabsScreen extends ConsumerStatefulWidget {
   const TabsScreen({super.key});
@@ -27,10 +29,40 @@ class _TabsScreenState extends ConsumerState<TabsScreen> {
     });
   }
 
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+  }
 
+  int totalNoti = 0;
+  int totalRealtime = 0;
+  int totalGeneral = 0;
+  int totalBuysale = 0;
 
   @override
   Widget build(BuildContext context) {
+    late final data = ref.watch(getNotiCountProvider);
+
+    var listNotiCount = data.value;
+    if (listNotiCount != null) {
+      for (var item in listNotiCount!) {
+        if (item['type'] == "ALL") {
+          totalNoti = item['total'];
+        }
+        if (item['type'] == "REALTIME") {
+          totalRealtime = item['total'];
+        }
+        if (item['type'] == "GENERAL") {
+          totalGeneral = item['total'];
+        }
+        if (item['type'] == "BUY_SALE") {
+          totalBuysale = item['total'];
+        }
+      }
+    }
+
+
     Widget activePage = const ArticlesScreen();
 
     switch (_selectPageIndex) {
@@ -49,7 +81,6 @@ class _TabsScreenState extends ConsumerState<TabsScreen> {
       case 4:
         activePage = const ProfileScreen();
     }
-
 
     return Scaffold(
       body: activePage,
@@ -75,15 +106,13 @@ class _TabsScreenState extends ConsumerState<TabsScreen> {
             fixedColor: Colors.amber,
             items: [
               const BottomNavigationBarItem(
-                icon: Icon(EneftyIcons.document_text_outline),
-                label: 'Tin tức',
-                activeIcon: Icon(EneftyIcons.document_text_bold)
-              ),
+                  icon: Icon(EneftyIcons.document_text_outline),
+                  label: 'Tin tức',
+                  activeIcon: Icon(EneftyIcons.document_text_bold)),
               const BottomNavigationBarItem(
                   icon: Icon(FluentIcons.gauge_24_regular),
                   label: 'RPI',
-                  activeIcon: Icon(FluentIcons.gauge_24_filled)
-              ),
+                  activeIcon: Icon(FluentIcons.gauge_24_filled)),
               BottomNavigationBarItem(
                 activeIcon: Align(
                   alignment: Alignment.bottomCenter,
@@ -97,14 +126,19 @@ class _TabsScreenState extends ConsumerState<TabsScreen> {
                           color: Colors.grey.withOpacity(0.2),
                           spreadRadius: 5,
                           blurRadius: 7,
-                          offset: const Offset(0, 3), // changes position of shadow
+                          offset:
+                              const Offset(0, 3), // changes position of shadow
                         ),
                       ],
                     ),
                     padding: const EdgeInsets.all(12),
-                    child: const Badge(
-                      label: Text('2'),
-                      child: Icon(FluentIcons.alert_20_filled, color: Colors.white,),
+                    child: Badge(
+                      label:
+                          Text(totalNoti > 99 ? '99+' : totalNoti.toString()),
+                      child: const Icon(
+                        FluentIcons.alert_20_filled,
+                        color: Colors.white,
+                      ),
                     ),
                   ),
                 ),
@@ -120,24 +154,25 @@ class _TabsScreenState extends ConsumerState<TabsScreen> {
                           color: Colors.grey.withOpacity(0.2),
                           spreadRadius: 5,
                           blurRadius: 7,
-                          offset: const Offset(0, 3), // changes position of shadow
+                          offset:
+                              const Offset(0, 3), // changes position of shadow
                         ),
                       ],
                     ),
                     padding: const EdgeInsets.all(12),
-                    child: const Badge(
-                      label: Text('2'),
-                      child: Icon(FluentIcons.alert_20_regular),
+                    child: Badge(
+                      label:
+                          Text(totalNoti > 99 ? '99+' : totalNoti.toString()),
+                      child: const Icon(FluentIcons.alert_20_regular),
                     ),
                   ),
                 ),
                 label: '',
               ),
               const BottomNavigationBarItem(
-                  icon: Icon(FluentIcons.gauge_24_regular),
-                  label: 'RPI',
-                  activeIcon: Icon(FluentIcons.gauge_24_filled)
-              ),
+                  icon: Icon(FluentIcons.bookmark_20_regular),
+                  label: 'Tin đã lưu',
+                  activeIcon: Icon(FluentIcons.bookmark_20_filled)),
               const BottomNavigationBarItem(
                 icon: Icon(EneftyIcons.user_outline),
                 activeIcon: Icon(EneftyIcons.user_bold),

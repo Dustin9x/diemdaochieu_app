@@ -19,6 +19,29 @@ class RPIService {
       throw Exception(response.reasonPhrase);
     }
   }
+
+  Future<dynamic> getRPIHisroty(String from, String to) async {
+    Response response = await get(Uri.parse('$baseUrl/api/v1/file/data/history-data?from=$from&to=$to'));
+
+    if (response.statusCode == 200) {
+      final result = json.decode(utf8.decode(response.bodyBytes))['data'];
+      return result.map((e) => e).toList();
+    } else {
+      throw Exception(response.reasonPhrase);
+    }
+  }
+
+  Future<dynamic> getVN30RPIHisroty(String selectedDate) async {
+    Response response = await get(Uri.parse('$baseUrl/api/v1/data/money-flow-vn30s?date=$selectedDate'));
+
+    if (response.statusCode == 200) {
+      final result = json.decode(utf8.decode(response.bodyBytes))['data'];
+      return result;
+    } else {
+      throw Exception(response.reasonPhrase);
+    }
+  }
+
 }
 
 final rpiProvider = Provider<RPIService>((ref) => RPIService());
