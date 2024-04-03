@@ -65,6 +65,25 @@ class ArticleService {
     }
   }
 
+  Future<List<dynamic>> submitSearch(String value) async {
+    var userToken = await storage.read(key: 'jwt');
+    Map<String, String> requestHeaders = {
+      'platform': 'ANDROID',
+      'Content-Type': 'application/json',
+      'X-Ddc-Token': userToken.toString(),
+    };
+
+    Response response = await get(Uri.parse('$baseUrl/client/data/search?keyword=$value&type=ALL'),headers: requestHeaders);
+
+    final message = json.decode(utf8.decode(response.bodyBytes))['message'];
+    if (response.statusCode == 200) {
+      final List result = json.decode(utf8.decode(response.bodyBytes))['data']['articles'];
+      return result.map((e) => e).toList();
+    }else{
+      throw Exception(response.reasonPhrase);
+    }
+  }
+
 }
 
 final articleProvider = Provider<ArticleService>((ref) => ArticleService());

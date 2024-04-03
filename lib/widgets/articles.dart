@@ -20,7 +20,7 @@ class Articles extends ConsumerWidget {
     var from = DateTime.parse(article['postedAt']);
     var to = DateTime.now();
     int seconds = to.difference(from).inSeconds;
-    String date = DateFormat("dd-MM-yyyy").format(DateTime.parse(article['postedAt']),);
+    String date = DateFormat("dd-MM-yy").format(DateTime.parse(article['postedAt']),);
     String time = DateFormat("hh:mm").format(DateTime.parse(article['postedAt']),);
 
     if (seconds >= 24 * 3600) {
@@ -83,15 +83,15 @@ class Articles extends ConsumerWidget {
                 child: SizedBox.fromSize(
                   child: Image.network(
                     article['imageUrl'],
-                    width: 120,
-                    height: 100,
+                    width: 110,
+                    height: 90,
                     fit: BoxFit.cover,
                   ),
                 ),
               ),
               Expanded(
                 child: Padding(
-                  padding: const EdgeInsets.all(8.0),
+                  padding: const EdgeInsets.all(6.0),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -100,9 +100,9 @@ class Articles extends ConsumerWidget {
                         maxLines: 2,
                         overflow: TextOverflow.ellipsis,
                         softWrap: true,
-                        style: const TextStyle(fontWeight: FontWeight.w500),
+                        style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w500),
                       ),
-                      const SizedBox(height: 6),
+                      const SizedBox(height: 4),
                       Container(
                         padding: const EdgeInsets.symmetric(horizontal: 10),
                         decoration: BoxDecoration(
@@ -110,15 +110,15 @@ class Articles extends ConsumerWidget {
                             borderRadius: BorderRadius.circular(50.0)),
                         child: Text(article['source'].length > 12 ? article['source'].substring(0, 12)+'...' : article['source'],  style: const TextStyle(fontSize: 11),),
                       ),
-                      const SizedBox(height: 6),
+                      const SizedBox(height: 4),
                       Row(
                         children: [
                           Text(daysBetween(),style: const TextStyle(fontSize: 11)),
-                          const SizedBox(width: 24),
+                          const SizedBox(width: 18),
                           const Icon(EneftyIcons.like_outline, size: 15.0),
                           const SizedBox(width: 4),
                           Text(article['likes'].toString(),style: const TextStyle(fontSize: 11)),
-                          const SizedBox(width: 24),
+                          const SizedBox(width: 18),
                           const Icon(FluentIcons.comment_16_regular, size: 16.0),
                           const SizedBox(width: 4),
                           Text(article['comments'].toString(),style: const TextStyle(fontSize: 11)),

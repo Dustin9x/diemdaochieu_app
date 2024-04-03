@@ -1,6 +1,12 @@
+import 'dart:convert' show json, utf8;
+import 'package:diemdaochieu_app/widgets/articles.dart';
+import 'package:diemdaochieu_app/widgets/notifications/notification_item.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:http/http.dart';
 
+var storage = const FlutterSecureStorage();
 
 class SearchScreen extends ConsumerStatefulWidget {
   const SearchScreen({super.key});
@@ -23,6 +29,46 @@ class _SearchScreenState extends ConsumerState<SearchScreen>
   void dispose() {
     _tabController.dispose();
     super.dispose();
+  }
+
+  var notiData;
+  var articleData;
+  var articleDDC;
+
+  var isLoading = false;
+
+  void _submitSearch(String value) async {
+    setState(() {
+      isLoading = true; // Set loading state to true
+    });
+
+    try {
+      var userToken = await storage.read(key: 'jwt');
+      Map<String, String> requestHeaders = {
+        'platform': 'ANDROID',
+        'Content-Type': 'application/json',
+        'X-Ddc-Token': userToken.toString(),
+      };
+      final url =
+          'https://api-prod.diemdaochieu.com/client/data/search?keyword=$value&type=ALL';
+
+      Response response = await get(Uri.parse(url), headers: requestHeaders);
+      if (response.statusCode == 200) {
+        final result = json.decode(utf8.decode(response.bodyBytes))['data'];
+        setState(() {
+          notiData = result['notifications'].map((e) => e).toList();
+          articleData = result['articles'].map((e) => e).toList();
+          articleDDC = articleData.where((e) => e['source'] == 'DDC%').toList();
+          isLoading = false; // Set loading state to false after success
+        });
+      } else {
+        // Handle error (e.g., throw an exception)
+        throw Exception('Failed to load products');
+      }
+    } catch (error) {
+      // Handle network or other errors
+      rethrow;
+    }
   }
 
   @override
@@ -56,25 +102,97 @@ class _SearchScreenState extends ConsumerState<SearchScreen>
                   labelPadding: const EdgeInsets.symmetric(horizontal: 8),
                   labelStyle: const TextStyle(fontWeight: FontWeight.bold),
                   unselectedLabelStyle:
-                  const TextStyle(fontWeight: FontWeight.normal),
+                      const TextStyle(fontWeight: FontWeight.normal),
                   tabAlignment: TabAlignment.start,
                   dividerColor: Colors.transparent,
                   tabs: [
-                    myTab('Cổ phiếu'),
-                    myTab('Mua / Bán'),
+                    myTab('Cảnh Báo Mua / Bán'),
                     myTab('Bài viết'),
+                    myTab('Bài viết DDC'),
                   ],
                 ),
               ),
             ),
-            title: const Text('Thông Báo'),
+            title: TextFormField(
+              decoration: InputDecoration(
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(30.0),
+                ),
+                filled: true,
+                hintStyle: TextStyle(color: Colors.grey[800]),
+                hintText: "Nhập nội dung tìm kiếm",
+                fillColor: Colors.white70,
+                isDense: true,
+                contentPadding:
+                    const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
+              ),
+              textInputAction: TextInputAction.go,
+              onFieldSubmitted: (value) {
+                _submitSearch(value);
+              },
+            ),
           ),
           body: TabBarView(
             controller: _tabController,
-            children: const [
-              Text('a'),
-              Text('b'),
-              Text('c'),
+            children: [
+              Container(
+                margin: const EdgeInsets.all(8),
+                padding: const EdgeInsets.all(8),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(20),
+                  color: Colors.white,
+                ),
+                child: isLoading == false && notiData == null
+                    ? const Center(
+                        child: Text('Vui lòng nhập nội dung tìm kiếm'))
+                    : isLoading == true
+                        ? const Center(child: CircularProgressIndicator())
+                        : ListView.builder(
+                            itemCount: notiData?.length,
+                            itemBuilder: (ctx, index) {
+                              return Notifications(
+                                  notification: notiData?[index]);
+                            },
+                          ),
+              ),
+              Container(
+                margin: const EdgeInsets.all(8),
+                padding: const EdgeInsets.all(8),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(20),
+                  color: Colors.white,
+                ),
+                child: isLoading == false && articleData == null
+                    ? const Center(
+                        child: Text('Vui lòng nhập nội dung tìm kiếm'))
+                    : isLoading == true
+                        ? const Center(child: CircularProgressIndicator())
+                        : ListView.builder(
+                            itemCount: articleData?.length,
+                            itemBuilder: (ctx, index) {
+                              return Articles(article: articleData?[index]);
+                            },
+                          ),
+              ),
+              Container(
+                margin: const EdgeInsets.all(8),
+                padding: const EdgeInsets.all(8),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(20),
+                  color: Colors.white,
+                ),
+                child: isLoading == false && articleDDC == null
+                    ? const Center(
+                        child: Text('Vui lòng nhập nội dung tìm kiếm'))
+                    : isLoading == true
+                        ? const Center(child: CircularProgressIndicator())
+                        : ListView.builder(
+                            itemCount: articleDDC?.length,
+                            itemBuilder: (ctx, index) {
+                              return Articles(article: articleDDC?[index]);
+                            },
+                          ),
+              ),
             ],
           )),
     );
