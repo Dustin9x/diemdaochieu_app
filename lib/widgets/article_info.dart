@@ -7,6 +7,6 @@ class ArticleInfo extends StatelessWidget{
 
   @override
   Widget build(BuildContext context) {
-    return Text('ahihi');
+    return const Text('ahihi');
   }
 }

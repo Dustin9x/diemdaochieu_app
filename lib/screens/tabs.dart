@@ -1,7 +1,6 @@
 import 'package:diemdaochieu_app/providers/notificationProvider.dart';
+import 'package:diemdaochieu_app/screens/archived_articles_screen.dart';
 import 'package:diemdaochieu_app/screens/rpi_screen.dart';
-import 'package:diemdaochieu_app/services/articleServices.dart';
-import 'package:diemdaochieu_app/services/notificationService.dart';
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:enefty_icons/enefty_icons.dart';
@@ -46,7 +45,7 @@ class _TabsScreenState extends ConsumerState<TabsScreen> {
 
     var listNotiCount = data.value;
     if (listNotiCount != null) {
-      for (var item in listNotiCount!) {
+      for (var item in listNotiCount) {
         if (item['type'] == "ALL") {
           totalNoti = item['total'];
         }
@@ -76,7 +75,7 @@ class _TabsScreenState extends ConsumerState<TabsScreen> {
         activePage = const NotificationScreen();
         break;
       case 3:
-        activePage = const RPIScreen();
+        activePage = const ArchivedArticlesScreen();
         break;
       case 4:
         activePage = const ProfileScreen();

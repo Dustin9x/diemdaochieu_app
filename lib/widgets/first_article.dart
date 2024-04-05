@@ -1,4 +1,3 @@
-import 'package:diemdaochieu_app/providers/articleProvider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 import 'package:diemdaochieu_app/screens/article_detail.dart';

@@ -65,7 +65,7 @@ class _RPIScreenState extends ConsumerState<RPIScreen>
       if (_tabController.index == 1){
         var userInfo = await storage.read(key: 'user');
         if(userInfo != null){
-          var userPackage = json.decode(userInfo!);
+          var userPackage = json.decode(userInfo);
           bool isPremium = userPackage['permissions'].contains('WEB_CLIENT') || userPackage['permissions'].contains('PAID_ARTICLE') || !userPackage['packages'].contains('FREE');
           if(isPremium == false){
             showDialog(context: context, builder: (BuildContext dialogContext){
@@ -88,6 +88,7 @@ class _RPIScreenState extends ConsumerState<RPIScreen>
     }
   }
 
+  @override
   Widget build(BuildContext context) {
     int size = 5;
     Container myTab(String text) {

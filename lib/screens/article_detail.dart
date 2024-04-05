@@ -1,6 +1,4 @@
-import 'dart:ffi';
 import 'dart:math';
-import 'dart:convert' show json, utf8;
 import 'package:diemdaochieu_app/services/articleServices.dart';
 import 'package:diemdaochieu_app/widgets/comments.dart';
 import 'package:http/http.dart';
@@ -13,8 +11,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-
-import '../providers/articleProvider.dart';
 
 var storage = const FlutterSecureStorage();
 
@@ -260,7 +256,7 @@ class _ArticleDetailState extends ConsumerState<ArticleDetail> {
                                 // Image border
                                 child: SizedBox.fromSize(
                                   child: Image.network(
-                                    articleDetail['createdBy']['imageUrl'] != null ? articleDetail['createdBy']['imageUrl'] : 'https://i.pravatar.cc/100',
+                                    articleDetail['createdBy']['imageUrl'] ?? 'https://i.pravatar.cc/100',
                                     width: 40,
                                     height: 40,
                                     fit: BoxFit.cover,

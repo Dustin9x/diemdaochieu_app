@@ -1,5 +1,4 @@
 import 'package:diemdaochieu_app/modal/premium_request.dart';
-import 'package:diemdaochieu_app/providers/articleProvider.dart';
 import 'package:diemdaochieu_app/screens/article_detail.dart';
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';

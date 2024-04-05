@@ -168,7 +168,7 @@ class _VN30RPITabState extends ConsumerState<VN30RPITab> {
                     getData(_selectedDate);
                   }
                   if(snapshot.data['data'] == null ){
-                    return Container(child: Center(child: Text('Xin lỗi, không có data, vui lòng chọn ngày khác')));
+                    return const Center(child: Text('Xin lỗi, không có data, vui lòng chọn ngày khác'));
                   }
                   Map<String, dynamic> response = snapshot.data['data'];
                   final sortedEntries = response.entries.toList()

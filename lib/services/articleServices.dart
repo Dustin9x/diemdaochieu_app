@@ -74,8 +74,6 @@ class ArticleService {
     };
 
     Response response = await get(Uri.parse('$baseUrl/client/data/search?keyword=$value&type=ALL'),headers: requestHeaders);
-
-    final message = json.decode(utf8.decode(response.bodyBytes))['message'];
     if (response.statusCode == 200) {
       final List result = json.decode(utf8.decode(response.bodyBytes))['data']['articles'];
       return result.map((e) => e).toList();
