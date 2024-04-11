@@ -78,13 +78,12 @@ class NotificationService {
       'X-Ddc-Token': userToken.toString(),
     };
     Response response = await get(
-      Uri.parse('$baseUrl/notification/group-by-type'),
+      Uri.parse('$baseUrl/notification/group-by-type?'),
       headers: requestHeaders,
     );
 
     if (response.statusCode == 200) {
       final List result = json.decode(utf8.decode(response.bodyBytes))['data'];
-      // print(result);
       return result.map((e) => e).toList();
     } else {
       throw Exception(response.reasonPhrase);

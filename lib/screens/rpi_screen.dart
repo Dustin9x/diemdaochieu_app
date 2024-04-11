@@ -7,7 +7,7 @@ import 'package:diemdaochieu_app/widgets/rpi/vn30_rpi_tab.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'dart:convert' show json, utf8;
+import 'dart:convert' show json;
 
 class RPIScreen extends ConsumerStatefulWidget {
   const RPIScreen({super.key});

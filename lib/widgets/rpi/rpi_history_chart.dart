@@ -258,7 +258,7 @@ class _RPIHistoryChartState extends ConsumerState<RPIHistoryChart> {
                 }
               }).toList();
             },
-            tooltipBgColor: Colors.white,
+            getTooltipColor: (touchedSpot) => Colors.white,
             tooltipBorder: const BorderSide(color: Colors.grey, width: 1)),
       ),
       gridData: FlGridData(

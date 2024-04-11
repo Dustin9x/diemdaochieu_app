@@ -1,4 +1,4 @@
-import 'dart:convert' show json, utf8;
+import 'dart:convert' show json;
 import 'package:diemdaochieu_app/screens/article_detail.dart';
 import 'package:intl/intl.dart';
 import 'package:diemdaochieu_app/screens/login_screen.dart';
@@ -35,8 +35,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
       isLoggedIn = false;
     });
     Navigator.of(context).pop();
-    // Navigator.of(context).
-    // pushAndRemoveUntil(MaterialPageRoute(builder: (ctx) => const TabsScreen()),(Route<dynamic> route) => false);
   }
 
   @override
@@ -66,7 +64,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   backgroundColor: const Color.fromARGB(20, 0, 0, 0),
                   body: SingleChildScrollView(
                     child: SizedBox(
-                      height: MediaQuery.of(context).size.height,
+                      height: MediaQuery.of(context).size.height*1.1,
                       child: Column(
                         children: [
                           Stack(
@@ -103,9 +101,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                           style: DefaultTextStyle.of(context).style,
                                           children: <TextSpan>[
                                         if (userInfo['currentPackage']['packageType'] == "FREE")
-                                          TextSpan(
+                                          const TextSpan(
                                           text: "Mãi Mãi",
-                                          style: const TextStyle(fontWeight: FontWeight.bold),)
+                                          style: TextStyle(fontWeight: FontWeight.bold))
                                         else TextSpan(
                                                 text: DateFormat("dd-MM-yyyy").format(DateTime.parse(userInfo['currentPackage']['endDate']),),
                                                 style: const TextStyle(fontWeight: FontWeight.bold),),
@@ -146,7 +144,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                   builder: (BuildContext context) => dialog);
                             },
                             child: const Text('Đăng xuất'),
-                          )
+                          ),
                         ],
                       ),
                     ),

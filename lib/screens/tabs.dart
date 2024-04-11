@@ -1,3 +1,4 @@
+import 'package:diemdaochieu_app/modal/login_request.dart';
 import 'package:diemdaochieu_app/providers/notificationProvider.dart';
 import 'package:diemdaochieu_app/screens/archived_articles_screen.dart';
 import 'package:diemdaochieu_app/screens/rpi_screen.dart';
@@ -9,6 +10,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:diemdaochieu_app/screens/articles_screen.dart';
 import 'package:diemdaochieu_app/screens/notification_screen.dart';
 import 'package:diemdaochieu_app/screens/profile_screen.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:http/http.dart';
 
 class TabsScreen extends ConsumerStatefulWidget {
   const TabsScreen({super.key});
@@ -21,16 +24,52 @@ class TabsScreen extends ConsumerStatefulWidget {
 
 class _TabsScreenState extends ConsumerState<TabsScreen> {
   int _selectPageIndex = 0;
+  var storage = const FlutterSecureStorage();
+  var isLoggedIn;
 
-  void _selectPage(int index) {
+  void _selectPage(int index)  async {
+    var loggedUser  = await storage.read(key: "user");
+    if(loggedUser == null && index == 2){
+      showDialog(context: context, builder: (BuildContext dialogContext){
+        return const LoginRequestModal();
+      });
+    }else{
+      setState(() {
+        _selectPageIndex = index;
+      });
+    }
+
+  }
+
+  loginState() async {
+    var userToken = await storage.read(key: 'jwt');
+    const baseUrl = 'https://api-prod.diemdaochieu.com/user/get-info';
+    Map<String, String> requestHeaders = {
+      'platform': 'ANDROID',
+      'Content-Type': 'application/json',
+      'x-ddc-token': userToken.toString(),
+    };
+      Response response = await get(Uri.parse(baseUrl),headers: requestHeaders);
+    if (response.statusCode == 200) {
+      setState(() {
+        isLoggedIn = true;
+      });
+    } else {
+      deleteAuthAll();
+    }
+  }
+
+  Future deleteAuthAll() async {
+    await storage.deleteAll();
     setState(() {
-      _selectPageIndex = index;
+      isLoggedIn = false;
     });
   }
 
   @override
   void initState() {
     // TODO: implement initState
+    loginState();
     super.initState();
   }
 
@@ -41,22 +80,25 @@ class _TabsScreenState extends ConsumerState<TabsScreen> {
 
   @override
   Widget build(BuildContext context) {
+
     late final data = ref.watch(getNotiCountProvider);
 
-    var listNotiCount = data.value;
-    if (listNotiCount != null) {
-      for (var item in listNotiCount) {
-        if (item['type'] == "ALL") {
-          totalNoti = item['total'];
-        }
-        if (item['type'] == "REALTIME") {
-          totalRealtime = item['total'];
-        }
-        if (item['type'] == "GENERAL") {
-          totalGeneral = item['total'];
-        }
-        if (item['type'] == "BUY_SALE") {
-          totalBuysale = item['total'];
+    if(data.hasValue){
+      var listNotiCount = data.value;
+      if (listNotiCount != null) {
+        for (var item in listNotiCount) {
+          if (item['type'] == "ALL") {
+            totalNoti = item['total'];
+          }
+          if (item['type'] == "REALTIME") {
+            totalRealtime = item['total'];
+          }
+          if (item['type'] == "GENERAL") {
+            totalGeneral = item['total'];
+          }
+          if (item['type'] == "BUY_SALE") {
+            totalBuysale = item['total'];
+          }
         }
       }
     }
@@ -131,13 +173,16 @@ class _TabsScreenState extends ConsumerState<TabsScreen> {
                       ],
                     ),
                     padding: const EdgeInsets.all(12),
-                    child: Badge(
+                    child: isLoggedIn == true ? Badge(
                       label:
                           Text(totalNoti > 99 ? '99+' : totalNoti.toString()),
                       child: const Icon(
                         FluentIcons.alert_20_filled,
                         color: Colors.white,
                       ),
+                    ) : const Icon(
+                      FluentIcons.alert_20_filled,
+                      color: Colors.white,
                     ),
                   ),
                 ),
@@ -159,11 +204,11 @@ class _TabsScreenState extends ConsumerState<TabsScreen> {
                       ],
                     ),
                     padding: const EdgeInsets.all(12),
-                    child: Badge(
+                    child: isLoggedIn == true ? Badge(
                       label:
                           Text(totalNoti > 99 ? '99+' : totalNoti.toString()),
                       child: const Icon(FluentIcons.alert_20_regular),
-                    ),
+                    ): const Icon(FluentIcons.alert_20_regular),
                   ),
                 ),
                 label: '',

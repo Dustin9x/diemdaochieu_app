@@ -1,4 +1,4 @@
-import 'dart:convert' show json, utf8;
+import 'dart:convert' show json;
 import 'package:diemdaochieu_app/services/articleServices.dart';
 import 'package:diemdaochieu_app/widgets/my_elevated_button.dart';
 import 'package:enefty_icons/enefty_icons.dart';
@@ -112,7 +112,7 @@ class _CommentState extends ConsumerState<Comments> {
           _formKeyComment.currentState!.reset();
         }
       } catch (e) {
-        print(e.toString());
+        throw e.toString();
       }
     }
 

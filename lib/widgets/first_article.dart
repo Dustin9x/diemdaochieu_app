@@ -1,5 +1,5 @@
+import 'package:diemdaochieu_app/utils/app_utils.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:intl/intl.dart';
 import 'package:diemdaochieu_app/screens/article_detail.dart';
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
@@ -12,30 +12,6 @@ class FirstArticle extends ConsumerWidget {
   });
 
   final dynamic article;
-
-  String daysBetween() {
-    var from = DateTime.parse(article['postedAt']);
-    var to = DateTime.now();
-    int seconds = to.difference(from).inSeconds;
-    String date = DateFormat("dd-MM-yyyy").format(DateTime.parse(article['postedAt']),);
-    String time = DateFormat("hh:mm").format(DateTime.parse(article['postedAt']),);
-
-    if (seconds >= 24 * 3600) {
-      return '$date lúc $time';
-    }
-
-    int interval = (seconds / 3600).floor();
-    if (interval >= 1) {
-      return 'Khoảng $interval tiếng';
-    }
-
-    interval = (seconds / 60).floor();
-    if (interval >= 1) {
-      return '$interval phút';
-    }
-
-    return '${(seconds).floor()} giây';
-  }
 
   @override
   Widget build(BuildContext context, ref) {
@@ -74,7 +50,7 @@ class FirstArticle extends ConsumerWidget {
                       children: [
                         Row(
                           children: [
-                            Text(daysBetween()),
+                            Text(AppUtils.daysBetween(article['postedAt'])),
                             const SizedBox(width: 24),
                             const Icon(EneftyIcons.like_outline, size: 18.0),
                             const SizedBox(width: 4),

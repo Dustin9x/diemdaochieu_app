@@ -1,3 +1,4 @@
+import 'package:diemdaochieu_app/modal/login_request.dart';
 import 'package:diemdaochieu_app/screens/search_screen.dart';
 import 'package:diemdaochieu_app/widgets/articles.dart';
 import 'package:diemdaochieu_app/widgets/first_article.dart';
@@ -18,6 +19,7 @@ class ArticlesScreen extends StatefulWidget {
 
 class _ArticlesScreenState extends State<ArticlesScreen> {
   static const _pageSize = 35;
+  var _activeCallbackIdentity;
 
   final PagingController<int, dynamic> _pagingController =
       PagingController(firstPageKey: 35);
@@ -31,15 +33,29 @@ class _ArticlesScreenState extends State<ArticlesScreen> {
   }
 
   Future<void> _fetchPage(int pageKey) async {
+    final callbackIdentity = Object();
+    _activeCallbackIdentity = callbackIdentity;
     try {
       final newItems = await http.get(Uri.parse(
           'https://api-prod.diemdaochieu.com/article/client/recent-posts?size=$pageKey'));
-      pageKey = pageKey + _pageSize;
-      final result = json.decode(utf8.decode(newItems.bodyBytes))['data'];
-      _pagingController.appendPage(result, pageKey);
+      if (callbackIdentity == _activeCallbackIdentity) {
+        pageKey = pageKey + _pageSize;
+        final result = json.decode(utf8.decode(newItems.bodyBytes))['data'];
+        _pagingController.appendPage(result, pageKey);
+      }
+
     } catch (error) {
-      _pagingController.error = error;
+      if (callbackIdentity == _activeCallbackIdentity) {
+        _pagingController.error = error;
+      }
     }
+  }
+
+  @override
+  void dispose() {
+    _pagingController.dispose();
+    _activeCallbackIdentity = null;
+    super.dispose();
   }
 
   @override
@@ -70,22 +86,13 @@ class _ArticlesScreenState extends State<ArticlesScreen> {
                     ],
                   );
                 }
-
-
                   return Articles (article: item);
-
               },
             ),
           ),
         ),
       ),
     );
-  }
-
-  @override
-  void dispose() {
-    _pagingController.dispose();
-    super.dispose();
   }
 }
 
@@ -111,8 +118,15 @@ Widget _appBar(BuildContext context, ColorAnimated colorAnimated) {
     ),
     actions: [
       IconButton(
-        onPressed: () {
-          Navigator.of(context).push(MaterialPageRoute(builder: (ctx) => const SearchScreen()));
+        onPressed: () async {
+          var loggedUser  = await storage.read(key: "user");
+          if(loggedUser == null){
+            showDialog(context: context, builder: (BuildContext dialogContext){
+              return const LoginRequestModal();
+            });
+          }else{
+            Navigator.of(context).push(MaterialPageRoute(builder: (ctx) => const SearchScreen()));
+          }
         },
         icon: Icon(
           EneftyIcons.search_normal_2_outline,

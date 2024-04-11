@@ -22,12 +22,15 @@ class ArticleService {
 
   Future<dynamic> getArticleById(int id) async {
     var userToken = await storage.read(key: 'jwt');
-    Map<String, String> requestHeaders = {
-      'platform': 'ANDROID',
-      'x-ddc-token': userToken.toString(),
-    };
     Response response;
     if(userToken != null){
+      Map<String, String> requestHeaders = {
+        'platform': 'ANDROID',
+        'Content-Type': 'application/json',
+        'Access-Control-Allow-Origin': 'origin',
+        'Access-Control-Allow-Credentials': 'true',
+        'x-ddc-token': userToken.toString(),
+      };
       response = await get(Uri.parse('$baseUrl/article/client/get-info/web/$id'),headers: requestHeaders);
     }else{
       response = await get(Uri.parse('$baseUrl/article/client/get-info/web/$id'));

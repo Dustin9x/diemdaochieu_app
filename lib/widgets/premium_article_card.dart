@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:enefty_icons/enefty_icons.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'dart:convert' show json, utf8;
+import 'dart:convert' show json;
 import 'package:intl/intl.dart';
 
 class PremiumArticleCard extends ConsumerWidget {
