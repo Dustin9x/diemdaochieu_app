@@ -1,5 +1,6 @@
 import 'dart:convert' show json;
 import 'package:diemdaochieu_app/screens/article_detail.dart';
+import 'package:diemdaochieu_app/utils/app_utils.dart';
 import 'package:intl/intl.dart';
 import 'package:diemdaochieu_app/screens/login_screen.dart';
 import 'package:flutter/material.dart';
@@ -25,8 +26,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
       userInfo = await json.decode(user!);
     }
   }
-
-
   bool isLoggedIn = false;
 
   Future deleteAuthAll() async {
@@ -119,7 +118,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 margin: const EdgeInsets.only(top: 15),
                                 child: CircleAvatar(
                                   radius: 52,
-                                  backgroundColor: Colors.amber,
+                                  backgroundColor: AppUtils.colorPackage(userInfo['currentPackage']['packageType']),
                                   child: CircleAvatar(
                                     radius: 48,
                                     backgroundColor: Colors.white,

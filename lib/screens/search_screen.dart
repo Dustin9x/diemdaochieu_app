@@ -101,6 +101,7 @@ class _SearchScreenState extends ConsumerState<SearchScreen>
                       borderRadius: BorderRadius.circular(40), // Creates border
                       color: Colors.white),
                   isScrollable: true,
+                  overlayColor: MaterialStateProperty.all(Colors.transparent),
                   padding: EdgeInsets.zero,
                   indicatorPadding: EdgeInsets.zero,
                   labelPadding: const EdgeInsets.symmetric(horizontal: 8),

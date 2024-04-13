@@ -1,10 +1,12 @@
 import 'package:diemdaochieu_app/modal/login_request.dart';
 import 'package:diemdaochieu_app/screens/search_screen.dart';
+import 'package:diemdaochieu_app/utils/app_utils.dart';
 import 'package:diemdaochieu_app/widgets/articles.dart';
 import 'package:diemdaochieu_app/widgets/first_article.dart';
 import 'package:diemdaochieu_app/widgets/premium_articles.dart';
 import 'package:enefty_icons/enefty_icons.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'dart:convert' show json, utf8;
 import 'package:http/http.dart' as http;
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
@@ -26,10 +28,19 @@ class _ArticlesScreenState extends State<ArticlesScreen> {
 
   @override
   void initState() {
+    super.initState();
     _pagingController.addPageRequestListener((pageKey) {
       _fetchPage(pageKey);
     });
-    super.initState();
+    initialization();
+  }
+
+  void initialization() async {
+    await AppUtils.checkLoginState();
+    print('ready in 1...');
+    await Future.delayed(const Duration(seconds: 1));
+    print('go!');
+    FlutterNativeSplash.remove();
   }
 
   Future<void> _fetchPage(int pageKey) async {

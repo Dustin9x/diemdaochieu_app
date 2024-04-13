@@ -7,37 +7,11 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'dart:convert' show json;
 import 'package:intl/intl.dart';
+import 'package:diemdaochieu_app/utils/app_utils.dart';
 
 class Articles extends ConsumerWidget {
   const Articles({super.key, required this.article});
-
-
-
   final dynamic article;
-
-  String daysBetween() {
-    var from = DateTime.parse(article['postedAt']);
-    var to = DateTime.now();
-    int seconds = to.difference(from).inSeconds;
-    String date = DateFormat("dd-MM-yy").format(DateTime.parse(article['postedAt']),);
-    String time = DateFormat("hh:mm").format(DateTime.parse(article['postedAt']),);
-
-    if (seconds >= 24 * 3600) {
-      return '$date lúc $time';
-    }
-
-    int interval = (seconds / 3600).floor();
-    if (interval >= 1) {
-      return 'Khoảng $interval tiếng';
-    }
-
-    interval = (seconds / 60).floor();
-    if (interval >= 1) {
-      return '$interval phút';
-    }
-
-    return '${(seconds).floor()} giây';
-  }
 
   @override
   Widget build(BuildContext context,ref) {
@@ -68,8 +42,6 @@ class Articles extends ConsumerWidget {
                 });
               }
             }
-
-
         },
 
         child: SizedBox(
@@ -99,7 +71,7 @@ class Articles extends ConsumerWidget {
                         maxLines: 2,
                         overflow: TextOverflow.ellipsis,
                         softWrap: true,
-                        style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w500),
+                        style: const TextStyle(fontWeight: FontWeight.w500),
                       ),
                       const SizedBox(height: 4),
                       Container(
@@ -112,15 +84,15 @@ class Articles extends ConsumerWidget {
                       const SizedBox(height: 4),
                       Row(
                         children: [
-                          Text(daysBetween(),style: const TextStyle(fontSize: 11)),
-                          const SizedBox(width: 18),
-                          const Icon(EneftyIcons.like_outline, size: 15.0),
-                          const SizedBox(width: 4),
-                          Text(article['likes'].toString(),style: const TextStyle(fontSize: 11)),
-                          const SizedBox(width: 18),
-                          const Icon(FluentIcons.comment_16_regular, size: 16.0),
-                          const SizedBox(width: 4),
-                          Text(article['comments'].toString(),style: const TextStyle(fontSize: 11)),
+                          Text(AppUtils.daysBetween(article['postedAt']),style: const TextStyle(fontSize: 12)),
+                          if(article['likes'] > 0) const SizedBox(width: 18),
+                          if(article['likes'] > 0) const Icon(EneftyIcons.like_outline, size: 15.0),
+                          if(article['likes'] > 0) const SizedBox(width: 4),
+                          if(article['likes'] > 0) Text(article['likes'].toString(),style: const TextStyle(fontSize: 11)),
+                          if(article['comments'] > 0) const SizedBox(width: 18),
+                          if(article['comments'] > 0) const Icon(FluentIcons.comment_16_regular, size: 16.0),
+                          if(article['comments'] > 0) const SizedBox(width: 4),
+                          if(article['comments'] > 0) Text(article['comments'].toString(),style: const TextStyle(fontSize: 11)),
                         ],
                       ),
                     ],

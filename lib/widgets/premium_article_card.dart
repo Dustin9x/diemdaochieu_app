@@ -1,12 +1,12 @@
 import 'package:diemdaochieu_app/modal/premium_request.dart';
 import 'package:diemdaochieu_app/screens/article_detail.dart';
+import 'package:diemdaochieu_app/utils/app_utils.dart';
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:enefty_icons/enefty_icons.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'dart:convert' show json;
-import 'package:intl/intl.dart';
 
 class PremiumArticleCard extends ConsumerWidget {
   const PremiumArticleCard({
@@ -15,30 +15,6 @@ class PremiumArticleCard extends ConsumerWidget {
   });
 
   final dynamic article;
-
-  String daysBetween() {
-    var from = DateTime.parse(article['postedAt']);
-    var to = DateTime.now();
-    int seconds = to.difference(from).inSeconds;
-    String date = DateFormat("dd-MM-yyyy").format(DateTime.parse(article['postedAt']),);
-    String time = DateFormat("hh:mm").format(DateTime.parse(article['postedAt']),);
-
-    if (seconds >= 24 * 3600) {
-      return '$date lúc $time';
-    }
-
-    int interval = (seconds / 3600).floor();
-    if (interval >= 1) {
-      return 'Khoảng $interval tiếng';
-    }
-
-    interval = (seconds / 60).floor();
-    if (interval >= 1) {
-      return '$interval phút';
-    }
-
-    return '${(seconds).floor()} giây';
-  }
 
   @override
   Widget build(BuildContext context,ref) {
@@ -98,21 +74,18 @@ class PremiumArticleCard extends ConsumerWidget {
                           fontWeight: FontWeight.w500, color: Colors.white),
                     ),
                     const SizedBox(height: 6),
-                    Text(daysBetween(),
+                    Text(AppUtils.daysBetween(article['postedAt']),
                         style: const TextStyle(fontSize: 11, color: Colors.white)),
                     const SizedBox(height: 6),
                     Row(
                       children: [
-                        const Icon(EneftyIcons.like_outline,
-                            size: 15.0, color: Colors.white),
-                        const SizedBox(width: 4),
-                        Text(article['likes'].toString(),style: const TextStyle(fontSize: 11, color: Colors.white)),
-                        const SizedBox(width: 24),
-                        const Icon(FluentIcons.comment_16_regular,
-                            size: 16.0, color: Colors.white),
-                        const SizedBox(width: 4),
-                        Text(article['comments'].toString(),
-                            style: const TextStyle(fontSize: 11, color: Colors.white)),
+                        if(article['likes'] > 0) const Icon(EneftyIcons.like_outline, size: 15.0, color: Colors.white),
+                        if(article['likes'] > 0) const SizedBox(width: 4),
+                        if(article['likes'] > 0) Text(article['likes'].toString(),style: const TextStyle(fontSize: 11, color: Colors.white)),
+                        if(article['likes'] > 0) const SizedBox(width: 24),
+                        if(article['comments'] > 0) const Icon(FluentIcons.comment_16_regular, size: 16.0, color: Colors.white),
+                        if(article['comments'] > 0) const SizedBox(width: 4),
+                        if(article['comments'] > 0) Text(article['comments'].toString(), style: const TextStyle(fontSize: 11, color: Colors.white)),
                       ],
                     )
                   ],

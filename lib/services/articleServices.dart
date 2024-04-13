@@ -1,5 +1,4 @@
 import 'dart:convert' show json, utf8;
-
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:http/http.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -83,6 +82,27 @@ class ArticleService {
     }else{
       throw Exception(response.reasonPhrase);
     }
+  }
+
+
+  Future<bool> likePosts(dynamic articleId) async {
+    var userToken = await storage.read(key: 'jwt');
+    String baseUrl = 'https://api-prod.diemdaochieu.com/article/client/like-post/$articleId';
+    try {
+      Map<String, String> requestHeaders = {
+        'platform': 'ANDROID',
+        'Content-Type': 'application/json',
+        'x-ddc-token': userToken.toString(),
+      };
+
+      Response response = await post(Uri.parse(baseUrl), headers: requestHeaders);
+      if (response.statusCode == 200) {
+        return true;
+      }
+    } catch (e) {
+      throw e.toString();
+    }
+    return false;
   }
 
 }

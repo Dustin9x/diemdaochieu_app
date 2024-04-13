@@ -1,3 +1,4 @@
+import 'package:diemdaochieu_app/utils/app_utils.dart';
 import 'package:diemdaochieu_app/widgets/notifications/buysell_noti_tab.dart';
 import 'package:diemdaochieu_app/widgets/notifications/general_noti_tab.dart';
 import 'package:diemdaochieu_app/widgets/notifications/realtime_noti_tab.dart';
@@ -6,7 +7,11 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 
 class NotificationScreen extends ConsumerStatefulWidget {
-  const NotificationScreen({super.key});
+  const NotificationScreen({super.key, required this.countGeneral, required this.countRealtime, required this.countBuySale});
+
+  final int countGeneral;
+  final int countRealtime;
+  final int countBuySale;
 
   @override
   ConsumerState<NotificationScreen> createState() => _NotificationScreenState();
@@ -15,11 +20,20 @@ class NotificationScreen extends ConsumerStatefulWidget {
 class _NotificationScreenState extends ConsumerState<NotificationScreen>
     with SingleTickerProviderStateMixin {
   late TabController _tabController;
+  int indexTab = 0;
 
   @override
   void initState() {
     super.initState();
     _tabController = TabController(length: 3, vsync: this);
+    _tabController.addListener(_handleTabSelection);
+  }
+
+  void _handleTabSelection() {
+      setState(() {
+        indexTab = _tabController.index;
+      });
+    print("Selected Index: " + _tabController.index.toString());
   }
 
   @override
@@ -28,16 +42,35 @@ class _NotificationScreenState extends ConsumerState<NotificationScreen>
     super.dispose();
   }
 
+  late Color badgeColor = Colors.red;
+
+  changeColor(int idx){
+    if(_tabController.index != idx){
+      setState(() {
+        badgeColor = Colors.grey;
+      });
+    }
+    return badgeColor;
+  }
+  Container myTab(String text, int count, int idx) {
+    return Container(
+      height: 30,
+      margin: const EdgeInsets.symmetric(horizontal: 8),
+      child: Tab(child: Row(
+        children: [
+          Text(text),
+          const SizedBox(width: 4),
+          if (count > 0) Badge(
+            label: Text(AppUtils.notiBadge(count)),
+            backgroundColor: _tabController.index != idx ? Colors.grey : null,
+          )
+        ],
+      )),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
-    Container myTab(String text) {
-      return Container(
-        height: 30,
-        margin: const EdgeInsets.symmetric(horizontal: 8),
-        child: Tab(child: Text(text)),
-      );
-    }
-
     return DefaultTabController(
       length: 3,
       child: Scaffold(
@@ -54,6 +87,7 @@ class _NotificationScreenState extends ConsumerState<NotificationScreen>
                       borderRadius: BorderRadius.circular(40), // Creates border
                       color: Colors.white),
                   isScrollable: true,
+                  overlayColor: MaterialStateProperty.all(Colors.transparent),
                   padding: EdgeInsets.zero,
                   indicatorPadding: EdgeInsets.zero,
                   labelPadding: const EdgeInsets.symmetric(horizontal: 8),
@@ -62,13 +96,10 @@ class _NotificationScreenState extends ConsumerState<NotificationScreen>
                       const TextStyle(fontWeight: FontWeight.normal),
                   tabAlignment: TabAlignment.start,
                   dividerColor: Colors.transparent,
-                  // onTap: (index){
-                  //   print(index);
-                  // },
                   tabs: [
-                    myTab('Thông báo chung'),
-                    myTab('Realtime'),
-                    myTab('Mua / Bán'),
+                    myTab('Thông báo chung', widget.countGeneral, 0),
+                    myTab('Realtime',widget.countRealtime, 1),
+                    myTab('Mua / Bán',widget.countBuySale, 2),
                   ],
                 ),
               ),

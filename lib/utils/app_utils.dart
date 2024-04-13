@@ -1,23 +1,17 @@
-import 'dart:math' as math;
+import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:http/http.dart';
 import 'package:intl/intl.dart';
-
-// import 'package:url_launcher/url_launcher.dart';
 
 class AppUtils {
   factory AppUtils() {
     return _singleton;
   }
 
+  static var storage = const FlutterSecureStorage();
+
   AppUtils._internal();
   static final AppUtils _singleton = AppUtils._internal();
-
-  double degreeToRadian(double degree) {
-    return degree * math.pi / 180;
-  }
-
-  double radianToDegree(double radian) {
-    return radian * 180 / math.pi;
-  }
 
   static String daysBetween(String postedAt) {
     var from = DateTime.parse(postedAt);
@@ -35,11 +29,38 @@ class AppUtils {
     return '${(seconds).floor()} giây';
   }
 
-  // Future<bool> tryToLaunchUrl(String url) async {
-  //   final uri = Uri.parse(url);
-  //   if (await canLaunchUrl(uri)) {
-  //     return await launchUrl(uri);
-  //   }
-  //   return false;
-  // }
+
+  static Future<bool> checkLoginState() async {
+    var userToken = await storage.read(key: 'jwt');
+    const baseUrl = 'https://api-prod.diemdaochieu.com/user/get-info';
+    Map<String, String> requestHeaders = {
+      'platform': 'ANDROID',
+      'Content-Type': 'application/json',
+      'x-ddc-token': userToken.toString(),
+    };
+    Response response = await get(Uri.parse(baseUrl),headers: requestHeaders);
+    if (response.statusCode == 200) {
+      return true;
+    } else {
+      await storage.deleteAll();
+      return false;
+    }
+  }
+
+
+  static Color colorPackage(String type){
+    switch(type){
+      case 'PREMIUM':
+        return Colors.green;
+      case 'GOLD':
+        return Colors.amber;
+      case 'FUND':
+        return Colors.deepPurple;
+    }
+    return Colors.grey.withOpacity(0.3);
+  }
+
+  static String notiBadge(int count){
+    return count > 99 ? '99+' : count.toString();
+  }
 }

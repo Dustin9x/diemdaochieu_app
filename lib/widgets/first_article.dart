@@ -37,7 +37,7 @@ class FirstArticle extends ConsumerWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const SizedBox(height: 240),
+                    const SizedBox(height: 250),
                     Text(
                       article['description'],
                       maxLines: 2,
@@ -51,14 +51,14 @@ class FirstArticle extends ConsumerWidget {
                         Row(
                           children: [
                             Text(AppUtils.daysBetween(article['postedAt'])),
-                            const SizedBox(width: 24),
-                            const Icon(EneftyIcons.like_outline, size: 18.0),
-                            const SizedBox(width: 4),
-                            Text(article['likes'].toString()),
-                            const SizedBox(width: 24),
-                            const Icon(FluentIcons.comment_16_regular, size: 18.0),
-                            const SizedBox(width: 4),
-                            Text(article['comments'].toString()),
+                            if(article['likes'] > 0) const SizedBox(width: 24),
+                            if(article['likes'] > 0) const Icon(EneftyIcons.like_outline, size: 18.0),
+                            if(article['likes'] > 0) const SizedBox(width: 4),
+                            if(article['likes'] > 0) Text(article['likes'].toString()),
+                            if(article['comments'] > 0) const SizedBox(width: 24),
+                            if(article['comments'] > 0) const Icon(FluentIcons.comment_16_regular, size: 18.0),
+                            if(article['comments'] > 0) const SizedBox(width: 4),
+                            if(article['comments'] > 0) Text(article['comments'].toString()),
                           ],
                         ),
                         const Spacer(),
@@ -81,7 +81,7 @@ class FirstArticle extends ConsumerWidget {
                         bottomLeft: Radius.circular(20),
                         bottomRight: Radius.circular(20)),
                     child: Container(
-                      height: 240,
+                      height: 250,
                       width: double.infinity,
                       foregroundDecoration: const BoxDecoration(
                         gradient: LinearGradient(
@@ -89,11 +89,11 @@ class FirstArticle extends ConsumerWidget {
                             Colors.black54,
                             Colors.transparent,
                             Colors.transparent,
-                            Colors.black54
+                            Colors.black87
                           ],
                           begin: Alignment.topCenter,
                           end: Alignment.bottomCenter,
-                          stops: [0, 0.3, 0.7, 1],
+                          stops: [0, 0.3, 0.6, 1],
                         ),
                       ),
                       child: Image(
@@ -103,7 +103,7 @@ class FirstArticle extends ConsumerWidget {
                     ),
                   ),
                   Container(
-                    height: 240,
+                    height: 250,
                     padding: const EdgeInsets.all(10),
                     alignment: Alignment.bottomLeft,
                     child: Text(
@@ -113,7 +113,7 @@ class FirstArticle extends ConsumerWidget {
                       softWrap: true,
                       style: const TextStyle(
                           color: Colors.white,
-                          fontSize: 18,
+                          fontSize: 20,
                           fontWeight: FontWeight.w600),
                     ),
                   ),

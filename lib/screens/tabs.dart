@@ -2,11 +2,11 @@ import 'package:diemdaochieu_app/modal/login_request.dart';
 import 'package:diemdaochieu_app/providers/notificationProvider.dart';
 import 'package:diemdaochieu_app/screens/archived_articles_screen.dart';
 import 'package:diemdaochieu_app/screens/rpi_screen.dart';
+import 'package:diemdaochieu_app/utils/app_utils.dart';
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:enefty_icons/enefty_icons.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-
 import 'package:diemdaochieu_app/screens/articles_screen.dart';
 import 'package:diemdaochieu_app/screens/notification_screen.dart';
 import 'package:diemdaochieu_app/screens/profile_screen.dart';
@@ -38,32 +38,12 @@ class _TabsScreenState extends ConsumerState<TabsScreen> {
         _selectPageIndex = index;
       });
     }
-
   }
+  
+
 
   loginState() async {
-    var userToken = await storage.read(key: 'jwt');
-    const baseUrl = 'https://api-prod.diemdaochieu.com/user/get-info';
-    Map<String, String> requestHeaders = {
-      'platform': 'ANDROID',
-      'Content-Type': 'application/json',
-      'x-ddc-token': userToken.toString(),
-    };
-      Response response = await get(Uri.parse(baseUrl),headers: requestHeaders);
-    if (response.statusCode == 200) {
-      setState(() {
-        isLoggedIn = true;
-      });
-    } else {
-      deleteAuthAll();
-    }
-  }
-
-  Future deleteAuthAll() async {
-    await storage.deleteAll();
-    setState(() {
-      isLoggedIn = false;
-    });
+    isLoggedIn = await AppUtils.checkLoginState();
   }
 
   @override
@@ -114,7 +94,11 @@ class _TabsScreenState extends ConsumerState<TabsScreen> {
         activePage = const RPIScreen();
         break;
       case 2:
-        activePage = const NotificationScreen();
+        activePage = NotificationScreen(
+          countGeneral: totalGeneral,
+          countRealtime: totalRealtime,
+          countBuySale: totalBuysale,
+        );
         break;
       case 3:
         activePage = const ArchivedArticlesScreen();
@@ -175,7 +159,7 @@ class _TabsScreenState extends ConsumerState<TabsScreen> {
                     padding: const EdgeInsets.all(12),
                     child: isLoggedIn == true ? Badge(
                       label:
-                          Text(totalNoti > 99 ? '99+' : totalNoti.toString()),
+                          Text(AppUtils.notiBadge(totalNoti)),
                       child: const Icon(
                         FluentIcons.alert_20_filled,
                         color: Colors.white,
@@ -206,7 +190,7 @@ class _TabsScreenState extends ConsumerState<TabsScreen> {
                     padding: const EdgeInsets.all(12),
                     child: isLoggedIn == true ? Badge(
                       label:
-                          Text(totalNoti > 99 ? '99+' : totalNoti.toString()),
+                      Text(totalNoti > 99 ? '99+' : totalNoti.toString()),
                       child: const Icon(FluentIcons.alert_20_regular),
                     ): const Icon(FluentIcons.alert_20_regular),
                   ),
