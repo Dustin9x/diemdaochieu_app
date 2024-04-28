@@ -1,4 +1,5 @@
 import 'package:diemdaochieu_app/modal/register_success.dart';
+import 'package:diemdaochieu_app/screens/forget_pw_screen.dart';
 import 'package:diemdaochieu_app/screens/tabs.dart';
 import 'dart:convert' show json, utf8;
 import 'package:diemdaochieu_app/widgets/my_elevated_button.dart';
@@ -26,6 +27,9 @@ class _LoginScreenState extends State<LoginScreen> {
   late ValueNotifier<int> _tabIndexBasicToggle;
   TextEditingController passController = TextEditingController();
   TextEditingController confirmPassController = TextEditingController();
+  bool _obscureText = true;
+  bool _obscureText1 = true;
+  bool _obscureText2 = true;
 
   @override
   void initState() {
@@ -41,6 +45,22 @@ class _LoginScreenState extends State<LoginScreen> {
   void _termCheck(bool newValue) => setState(() {
         termCheck = newValue;
       });
+
+  void _toggle() {
+    setState(() {
+      _obscureText = !_obscureText;
+    });
+  }
+  void _toggle1() {
+    setState(() {
+      _obscureText1 = !_obscureText1;
+    });
+  }
+  void _toggle2() {
+    setState(() {
+      _obscureText2 = !_obscureText2;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -62,14 +82,32 @@ class _LoginScreenState extends State<LoginScreen> {
 
   Widget basicTabToggle() => Column(
         children: [
+          Padding(
+            padding: const EdgeInsets.only(bottom: 64),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Image.asset(
+                    'assets/images/icon.png',
+                    width: 30,
+                    height: 30,
+                ),
+                const SizedBox(width: 8),
+                const Text('ĐIỂM ĐẢO CHIỀU',style: TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.w900,
+                ),)
+              ],
+            ),
+          ),
           ValueListenableBuilder(
             valueListenable: _tabIndexBasicToggle,
             builder: (context, currentIndex, _) {
               return FlutterToggleTab(
                 // width in percent
-                width: 70,
+                width: 60,
                 borderRadius: 30,
-                height: 45,
+                height: 40,
                 selectedIndex: _tabIndexBasicToggle.value,
                 selectedBackgroundColors: const [
                   Colors.orangeAccent,
@@ -239,8 +277,17 @@ class _LoginScreenState extends State<LoginScreen> {
                 fillColor: Colors.white70,
                 contentPadding:
                 const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                suffixIcon: IconButton(
+                    icon: Icon(
+                      _obscureText1
+                          ? Icons.visibility_off
+                          : Icons.visibility,
+                      color: Colors.grey[800],
+                    ),
+                    onPressed: _toggle1
+                ),
               ),
-              obscureText: true,
+              obscureText: _obscureText1,
               controller: passController,
               validator: (value) {
                 if (value == null || value.trim().isEmpty) {
@@ -266,8 +313,17 @@ class _LoginScreenState extends State<LoginScreen> {
                 fillColor: Colors.white70,
                 contentPadding:
                 const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                suffixIcon: IconButton(
+                    icon: Icon(
+                      _obscureText2
+                          ? Icons.visibility_off
+                          : Icons.visibility,
+                      color: Colors.grey[800],
+                    ),
+                    onPressed: _toggle2
+                ),
               ),
-              obscureText: true,
+              obscureText: _obscureText2,
               controller: confirmPassController,
               validator: (value) {
                 if (value == null || value.trim().isEmpty) {
@@ -295,8 +351,8 @@ class _LoginScreenState extends State<LoginScreen> {
             ),
             MyElevatedButton(
               disable: !termCheck,
-              width: widthInPercent(50, context),
-              height: 50,
+              width: widthInPercent(40, context),
+              height: 45,
               onPressed: termCheck == true ? _submitRegister : null,
               borderRadius: BorderRadius.circular(40),
               child: const Text(
@@ -406,10 +462,19 @@ class _LoginScreenState extends State<LoginScreen> {
                 hintStyle: TextStyle(color: Colors.grey[800]),
                 hintText: "Mật khẩu (*)",
                 fillColor: Colors.white70,
+                suffixIcon: IconButton(
+                  icon: Icon(
+                    _obscureText
+                        ? Icons.visibility_off
+                        : Icons.visibility,
+                    color: Colors.grey[800],
+                  ),
+                  onPressed: _toggle
+                ),
                 contentPadding:
                     const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
               ),
-              obscureText: true,
+              obscureText: _obscureText,
               validator: (value) {
                 if (value == null || value.trim().isEmpty) {
                   return 'Mật khẩu không được để trống';
@@ -425,14 +490,17 @@ class _LoginScreenState extends State<LoginScreen> {
               children: [
                 TextButton(
                   child: const Text('Quên mật khẩu'),
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.of(context).push(MaterialPageRoute(
+                        builder: (ctx) => const ForgetPasswordScreen()));
+                  },
                 ),
               ],
             ),
             MyElevatedButton(
               disable: false,
-              width: widthInPercent(50, context),
-              height: 50,
+              width: widthInPercent(40, context),
+              height: 45,
               onPressed: _submitLogin,
               borderRadius: BorderRadius.circular(40),
               child: const Text(

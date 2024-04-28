@@ -32,6 +32,8 @@ class AppUtils {
 
   static Future<bool> checkLoginState() async {
     var userToken = await storage.read(key: 'jwt');
+    if(userToken == null) return false;
+
     const baseUrl = 'https://api-prod.diemdaochieu.com/user/get-info';
     Map<String, String> requestHeaders = {
       'platform': 'ANDROID',

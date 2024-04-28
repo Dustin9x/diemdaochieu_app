@@ -7,7 +7,7 @@ class ArchivedArticlesScreen extends StatelessWidget{
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Bài viết lưu trữ'),
+        title: const Text('Bài Viết Lưu Trữ'),
       ),
       body: const Center(
         child: Text('Tính năng đang được xây dựng, vui lòng quay lại sau')

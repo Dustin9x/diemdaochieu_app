@@ -15,7 +15,6 @@ import 'package:share_plus/share_plus.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:html/parser.dart';
 
 var storage = const FlutterSecureStorage();
 
@@ -100,13 +99,6 @@ class _ArticleDetailState extends ConsumerState<ArticleDetail> {
     return finalSrc;
   }
 
-  String _parseHtmlString(String htmlString) {
-    final document = parse(htmlString);
-    final String parsedString = parse(document.body!.text).documentElement!.text;
-
-    return parsedString;
-  }
-
   Future<void> fetchArticle(int id) async {
     var userToken = await storage.read(key: 'jwt');
     Response response;
@@ -137,10 +129,28 @@ class _ArticleDetailState extends ConsumerState<ArticleDetail> {
     }
   }
 
+  Future<void> getFontSize() async {
+    var index = await storage.read(key: "selectFontIndex");
+    if(index == null || index == '') return;
+    _selectFontIndex = int.tryParse(index)!;
+    switch (index) {
+      case '0':
+        initFontSize = 13;
+        break;
+      case '1':
+        initFontSize = 17;
+        break;
+      case '2':
+        initFontSize = 22;
+        break;
+    }
+  }
+
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
+    getFontSize();
     fetchArticle(widget.articleId);
   }
 
@@ -226,11 +236,11 @@ class _ArticleDetailState extends ConsumerState<ArticleDetail> {
                                   Colors.black,
                                   Colors.transparent,
                                   Colors.transparent,
-                                  Colors.black54
+                                  Colors.black87
                                 ],
                                 begin: Alignment.topCenter,
                                 end: Alignment.bottomCenter,
-                                stops: [0, 0.0, 0.7, 1],
+                                stops: [0, 0.0, 0.4, 1],
                               ),
                             ),
                             child: Image(
@@ -260,8 +270,7 @@ class _ArticleDetailState extends ConsumerState<ArticleDetail> {
                         children: [
                           Row(
                             children: [
-                              Text(
-                                articleDetail['categories'][0]['name'],
+                              Text(articleDetail['categories'].length == 0 ? "" : articleDetail['categories'][0]['name'],
                                 style: const TextStyle(
                                     fontSize: 13,
                                     fontWeight: FontWeight.w700,
@@ -381,30 +390,42 @@ class _ArticleDetailState extends ConsumerState<ArticleDetail> {
                       ],
                       onLinkTap: (url, _, __) async {
                         if (await canLaunchUrl(Uri.parse(url!))) {
-                          await launchUrl(
-                            Uri.parse(url),
-                          );
+                          if(url.contains("diemdaochieu.com")){
+                            var lastItem = url.split("/").last;
+                            int? ddcArticleId = int.tryParse(lastItem);
+                            Navigator.of(context).push(MaterialPageRoute(builder: (ctx) => ArticleDetail(articleId: ddcArticleId)));
+                          }else{
+                            await launchUrl(
+                              Uri.parse(url),
+                            );
+                          }
                         } else {
                           throw 'Could not launch $url';
                         }
                       },
                       style: {
                         "h1 > *": Style(
-                          fontSize: FontSize(initFontSize + 10),
+                          fontSize: FontSize(initFontSize + 8),
                         ),
                         "h2 > *": Style(
-                          fontSize: FontSize(initFontSize + 5),
+                          fontSize: FontSize(initFontSize + 4),
                         ),
                         "p > *": Style(
                           fontSize: FontSize(initFontSize),
                         ),
                         "h1": Style(
-                          fontSize: FontSize(initFontSize + 10),
+                          fontSize: FontSize(initFontSize + 8),
                         ),
                         "h2": Style(
-                          fontSize: FontSize(initFontSize + 5),
+                          fontSize: FontSize(initFontSize + 4),
                         ),
                         "p": Style(
+                          fontSize: FontSize(initFontSize),
+                        ),
+                        "p span": Style(
+                          fontSize: FontSize(initFontSize),
+                        ),
+                        "div": Style(
                           fontSize: FontSize(initFontSize),
                         ),
                         "a": Style(
@@ -515,11 +536,12 @@ class _ArticleDetailState extends ConsumerState<ArticleDetail> {
                                               color: Colors.white)),
                                     ),
                                   ) : const Icon(FluentIcons.text_font_size_20_filled, size: 18),
-                                  onPressed: () {
+                                  onPressed: () async {
                                     setState(() {
                                       _selectFontIndex = 0;
                                       initFontSize = 13.0;
                                     });
+                                    await storage.write(key: 'selectFontIndex', value: "0");
                                   }),
                               IconButton(
                                   icon: _selectFontIndex == 1 ? const ClipOval(
@@ -534,11 +556,12 @@ class _ArticleDetailState extends ConsumerState<ArticleDetail> {
                                               color: Colors.white)),
                                     ),
                                   ) : const Icon(FluentIcons.text_font_size_20_filled, size: 26),
-                                  onPressed: () {
+                                  onPressed: () async {
                                     setState(() {
                                       _selectFontIndex = 1;
                                       initFontSize = 17.0;
                                     });
+                                    await storage.write(key: 'selectFontIndex', value: "1");
                                   }),
                               IconButton(
                                   icon: _selectFontIndex == 2 ? const ClipOval(
@@ -554,11 +577,12 @@ class _ArticleDetailState extends ConsumerState<ArticleDetail> {
                                     ),
                                   ) : const Icon(FluentIcons.text_font_size_20_filled, size: 32),
                                   selectedIcon: const Icon(FluentIcons.text_font_size_20_filled, size: 48),
-                                  onPressed: () {
+                                  onPressed: () async {
                                     setState(() {
                                       _selectFontIndex = 2;
                                       initFontSize = 22.0;
                                     });
+                                    await storage.write(key: 'selectFontIndex', value: "2");
                                   }),
                               const SizedBox(width: 2),
                             ],

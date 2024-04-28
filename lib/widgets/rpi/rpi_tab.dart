@@ -68,7 +68,7 @@ class RPITab extends ConsumerWidget {
                           child: ElevatedButton(
                             onPressed: (){
                               Navigator.of(context).push(MaterialPageRoute(
-                                  builder: (ctx) => ArticleDetail(
+                                  builder: (ctx) => const ArticleDetail(
                                     articleId: 163,
                                   )));
                             },
@@ -111,8 +111,8 @@ class RPITab extends ConsumerWidget {
                           color: Colors.transparent,
                         ),
                         pointer: GaugePointer.needle(
-                          width: 16,
-                          height: 70,
+                          width: 13,
+                          height: 55,
                           borderRadius: 16,
                           color: Color(0xFF193663),
                         ),

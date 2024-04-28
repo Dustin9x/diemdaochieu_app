@@ -103,6 +103,7 @@ class _RPIScreenState extends ConsumerState<RPIScreen>
       backgroundColor: const Color.fromARGB(10, 0, 0, 0),
       appBar: AppBar(
         title: const Text('Chỉ Báo RPI'),
+        surfaceTintColor: Colors.white,
         backgroundColor: Colors.transparent,
       ),
       body: ListView(
@@ -112,6 +113,7 @@ class _RPIScreenState extends ConsumerState<RPIScreen>
               indicator: BoxDecoration(
                   borderRadius: BorderRadius.circular(40), color: Colors.white),
               isScrollable: true,
+              overlayColor: MaterialStateProperty.all(Colors.transparent),
               padding: EdgeInsets.zero,
               indicatorPadding: EdgeInsets.zero,
               labelPadding: const EdgeInsets.symmetric(horizontal: 8),

@@ -27,7 +27,7 @@ class MyHttpOverrides extends HttpOverrides {
 void main() {
   HttpOverrides.global = MyHttpOverrides();
   WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
-  FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
+  // FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
   runApp(
     const ProviderScope(
       child: App(),

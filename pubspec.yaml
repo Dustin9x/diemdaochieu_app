@@ -74,12 +74,10 @@ dev_dependencies:
   riverpod_lint: ^2.3.9
 
 
-flutter_native_splash:
-  background_image: assets/images/splashscreen.png
-  background_image_dark: assets/images/darksplashscreen.png
-  android_gravity: fill
-  ios_content_mode: scaleToFill
-  fullscreen: true
+#flutter_native_splash:
+#  color: "#FFC601"
+#  image: assets/images/icon.png
+#  fullscreen: true
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

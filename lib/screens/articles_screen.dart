@@ -40,7 +40,7 @@ class _ArticlesScreenState extends State<ArticlesScreen> {
     print('ready in 1...');
     await Future.delayed(const Duration(seconds: 1));
     print('go!');
-    FlutterNativeSplash.remove();
+    // FlutterNativeSplash.remove();
   }
 
   Future<void> _fetchPage(int pageKey) async {

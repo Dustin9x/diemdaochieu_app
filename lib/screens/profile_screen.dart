@@ -56,102 +56,104 @@ class _ProfileScreenState extends State<ProfileScreen> {
           }
           return isLoggedIn
               ? Scaffold(
-                  appBar: AppBar(
-                      title: const Text('Của tôi'),
-                      //backgroundColor: Theme.of(context).colorScheme.primaryContainer,
-                      ),
-                  backgroundColor: const Color.fromARGB(20, 0, 0, 0),
-                  body: SingleChildScrollView(
-                    child: SizedBox(
-                      height: MediaQuery.of(context).size.height*1.1,
-                      child: Column(
-                        children: [
-                          Stack(
-                            children: [
-                              Card(
-                                elevation: 0,
-                                color: Colors.white,
-                                margin: const EdgeInsets.only(top: 60, left: 10, right: 10),
-                                child: SizedBox(
-                                  width: double.infinity,
-                                  height: 170,
-                                  child: Column(
-                                    children: [
-                                      const SizedBox(height: 70),
-                                      Text(
-                                        userInfo['fullName'],
-                                        style: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
-                                      ),
-                                      const SizedBox(height: 12),
-                                      RichText(
-                                        text: TextSpan(
-                                          text: 'Đang là thành viên: ',
-                                          style: DefaultTextStyle.of(context).style,
-                                          children: <TextSpan>[
-                                            TextSpan(
-                                                text: userInfo['currentPackage']['packageType'],
-                                                style: const TextStyle(fontWeight: FontWeight.bold)),
-                                          ],
-                                        ),
-                                      ),
-                                      RichText(
-                                        text: TextSpan(
-                                          text: 'Hạn sử dụng: ',
-                                          style: DefaultTextStyle.of(context).style,
-                                          children: <TextSpan>[
-                                        if (userInfo['currentPackage']['packageType'] == "FREE")
-                                          const TextSpan(
-                                          text: "Mãi Mãi",
-                                          style: TextStyle(fontWeight: FontWeight.bold))
-                                        else TextSpan(
-                                                text: DateFormat("dd-MM-yyyy").format(DateTime.parse(userInfo['currentPackage']['endDate']),),
-                                                style: const TextStyle(fontWeight: FontWeight.bold),),
-                                          ],
-                                        ),
-                                      ),
+            appBar: AppBar(
+              title: const Text('Của Tôi'),
+              surfaceTintColor: Colors.white,
+              //backgroundColor: Theme.of(context).colorScheme.primaryContainer,
+            ),
+            backgroundColor: const Color.fromARGB(20, 0, 0, 0),
+            body: SingleChildScrollView(
+              child: SizedBox(
+                height: MediaQuery.of(context).size.height*1.1,
+                child: Column(
+                  children: [
+                    Stack(
+                      children: [
+                        Card(
+                          elevation: 0,
+                          color: Colors.white,
+                          margin: const EdgeInsets.only(top: 60, left: 10, right: 10),
+                          child: SizedBox(
+                            width: double.infinity,
+                            height: 170,
+                            child: Column(
+                              children: [
+                                const SizedBox(height: 70),
+                                Text(
+                                  userInfo['fullName'],
+                                  style: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+                                ),
+                                const SizedBox(height: 12),
+                                RichText(
+                                  text: TextSpan(
+                                    text: 'Đang là thành viên: ',
+                                    style: DefaultTextStyle.of(context).style,
+                                    children: <TextSpan>[
+                                      TextSpan(
+                                          text: userInfo['currentPackage']['packageType'],
+                                          style: const TextStyle(fontWeight: FontWeight.bold)),
                                     ],
                                   ),
                                 ),
-                              ),
-                              Container(
-                                width: double.infinity,
-                                margin: const EdgeInsets.only(top: 15),
-                                child: CircleAvatar(
-                                  radius: 52,
-                                  backgroundColor: AppUtils.colorPackage(userInfo['currentPackage']['packageType']),
-                                  child: CircleAvatar(
-                                    radius: 48,
-                                    backgroundColor: Colors.white,
-                                    child: CircleAvatar(
-                                      backgroundImage: userInfo['imageUrl'] != null ? NetworkImage(userInfo['imageUrl']) : const NetworkImage('https://i.pravatar.cc/100'),
-                                      radius: 44,
-                                    ) ,
+                                RichText(
+                                  text: TextSpan(
+                                    text: 'Hạn sử dụng: ',
+                                    style: DefaultTextStyle.of(context).style,
+                                    children: <TextSpan>[
+                                      if (userInfo['currentPackage']['packageType'] == "FREE")
+                                        const TextSpan(
+                                            text: "Mãi Mãi",
+                                            style: TextStyle(fontWeight: FontWeight.bold))
+                                      else TextSpan(
+                                        text: DateFormat("dd-MM-yyyy").format(DateTime.parse(userInfo['currentPackage']['endDate']),),
+                                        style: const TextStyle(fontWeight: FontWeight.bold),),
+                                    ],
                                   ),
                                 ),
-                              ),
-                            ],
-                          ),
-                          const SizedBox(height: 16),
-                          myAction(),
-                          TextButton(
-                            style: TextButton.styleFrom(
-                              foregroundColor: Colors.red,
+                              ],
                             ),
-                            onPressed: () {
-                              showDialog(
-                                  context: context,
-                                  builder: (BuildContext context) => dialog);
-                            },
-                            child: const Text('Đăng xuất'),
                           ),
-                        ],
-                      ),
+                        ),
+                        Container(
+                          width: double.infinity,
+                          margin: const EdgeInsets.only(top: 15),
+                          child: CircleAvatar(
+                            radius: 52,
+                            backgroundColor: AppUtils.colorPackage(userInfo['currentPackage']['packageType']),
+                            child: CircleAvatar(
+                              radius: 48,
+                              backgroundColor: Colors.white,
+                              child: CircleAvatar(
+                                backgroundImage: userInfo['imageUrl'] != null ? NetworkImage(userInfo['imageUrl']) : const NetworkImage('https://i.pravatar.cc/100'),
+                                radius: 44,
+                              ) ,
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
-                  ),
-                )
+                    const SizedBox(height: 16),
+                    myAction(),
+                    TextButton(
+                      style: TextButton.styleFrom(
+                        foregroundColor: Colors.red,
+                      ),
+                      onPressed: () {
+                        showDialog(
+                            context: context,
+                            builder: (BuildContext context) => dialog);
+                      },
+                      child: const Text('Đăng xuất'),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          )
               : Scaffold(
             appBar: AppBar(
-                title: const Text('Của tôi'),
+                title: const Text('Của Tôi'),
+                surfaceTintColor: Colors.white,
                 actions: profileAction()
               //backgroundColor: Theme.of(context).colorScheme.primaryContainer,
             ),
@@ -234,35 +236,35 @@ class _ProfileScreenState extends State<ProfileScreen> {
   }
 
   List<Widget> profileAction() => [
-        SizedBox(
-          height: 35,
-          child: TextButton(
-              child: const Text('Đăng ký'),
-              onPressed: () {
-                Navigator.of(context).push(MaterialPageRoute(
-                    builder: (ctx) => const LoginScreen(
-                          tabIndex: 0,
-                        )));
-              }),
+    SizedBox(
+      height: 35,
+      child: TextButton(
+          child: const Text('Đăng ký'),
+          onPressed: () {
+            Navigator.of(context).push(MaterialPageRoute(
+                builder: (ctx) => const LoginScreen(
+                  tabIndex: 0,
+                )));
+          }),
+    ),
+    Padding(
+      padding: const EdgeInsets.symmetric(
+        horizontal: 12,
+      ),
+      child: SizedBox(
+        height: 35,
+        child: ElevatedButton(
+          child: const Text('Đăng nhập'),
+          onPressed: () {
+            Navigator.of(context).push(MaterialPageRoute(
+                builder: (ctx) => const LoginScreen(
+                  tabIndex: 1,
+                )));
+          },
         ),
-        Padding(
-          padding: const EdgeInsets.symmetric(
-            horizontal: 12,
-          ),
-          child: SizedBox(
-            height: 35,
-            child: ElevatedButton(
-              child: const Text('Đăng nhập'),
-              onPressed: () {
-                Navigator.of(context).push(MaterialPageRoute(
-                    builder: (ctx) => const LoginScreen(
-                          tabIndex: 1,
-                        )));
-              },
-            ),
-          ),
-        ),
-      ];
+      ),
+    ),
+  ];
 
   Widget myAction() {
     return Column(
@@ -288,8 +290,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       SizedBox(
                         width: double.infinity,
                         child: ElevatedButton.icon(
-                          style: const ButtonStyle(
-                              alignment: Alignment.centerLeft),
+                          style: ElevatedButton.styleFrom(
+                            surfaceTintColor: Colors.white,
+                            backgroundColor: Colors.white,
+                            alignment: Alignment.centerLeft,
+                          ),
                           icon: const Icon(EneftyIcons.setting_2_outline),
                           label: const Text('Cài đặt ứng dụng'),
                           onPressed: () {},
@@ -298,10 +303,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       SizedBox(
                         width: double.infinity,
                         child: ElevatedButton.icon(
-                          style: const ButtonStyle(
-                              alignment: Alignment.centerLeft),
+                          style: ElevatedButton.styleFrom(
+                            surfaceTintColor: Colors.white,
+                            backgroundColor: Colors.white,
+                            alignment: Alignment.centerLeft,
+                          ),
                           icon:
-                              const Icon(EneftyIcons.message_question_outline),
+                          const Icon(EneftyIcons.message_question_outline),
                           label: const Text('Hướng dẫn sử dụng'),
                           onPressed: () {
                             Navigator.of(context).push(MaterialPageRoute(
@@ -314,8 +322,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       SizedBox(
                         width: double.infinity,
                         child: ElevatedButton.icon(
-                          style: const ButtonStyle(
-                              alignment: Alignment.centerLeft),
+                          style: ElevatedButton.styleFrom(
+                            surfaceTintColor: Colors.white,
+                            backgroundColor: Colors.white,
+                            alignment: Alignment.centerLeft,
+                          ),
                           icon: const Icon(EneftyIcons.tick_circle_outline),
                           label: const Text('Bình chọn'),
                           onPressed: () {},
@@ -324,8 +335,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       SizedBox(
                         width: double.infinity,
                         child: ElevatedButton.icon(
-                          style: const ButtonStyle(
-                              alignment: Alignment.centerLeft),
+                          style: ElevatedButton.styleFrom(
+                            surfaceTintColor: Colors.white,
+                            backgroundColor: Colors.white,
+                            alignment: Alignment.centerLeft,
+                          ),
                           icon: const Icon(EneftyIcons.info_circle_outline),
                           label: const Text('Về chúng tôi'),
                           onPressed: () {},
@@ -360,8 +374,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       SizedBox(
                         width: double.infinity,
                         child: ElevatedButton.icon(
-                          style: const ButtonStyle(
-                              alignment: Alignment.centerLeft),
+                          style: ElevatedButton.styleFrom(
+                            surfaceTintColor: Colors.white,
+                            backgroundColor: Colors.white,
+                            alignment: Alignment.centerLeft,
+                          ),
                           icon: const Icon(EneftyIcons.message_outline),
                           label: const Text('Zalo: 0933 721 095'),
                           onPressed: () {},
@@ -370,8 +387,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       SizedBox(
                         width: double.infinity,
                         child: ElevatedButton.icon(
-                          style: const ButtonStyle(
-                              alignment: Alignment.centerLeft),
+                          style: ElevatedButton.styleFrom(
+                            surfaceTintColor: Colors.white,
+                            backgroundColor: Colors.white,
+                            alignment: Alignment.centerLeft,
+                          ),
                           icon: const Icon(Icons.facebook_outlined),
                           label: const Text('Fanpage: diemdaochieu'),
                           onPressed: () {},
@@ -380,8 +400,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       SizedBox(
                         width: double.infinity,
                         child: ElevatedButton.icon(
-                          style: const ButtonStyle(
-                              alignment: Alignment.centerLeft),
+                          style: ElevatedButton.styleFrom(
+                            surfaceTintColor: Colors.white,
+                            backgroundColor: Colors.white,
+                            alignment: Alignment.centerLeft,
+                          ),
                           icon: const Icon(EneftyIcons.call_outline),
                           label: const Text('Hotline: 0389 0787 69'),
                           onPressed: () {},
@@ -390,8 +413,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       SizedBox(
                         width: double.infinity,
                         child: ElevatedButton.icon(
-                          style: const ButtonStyle(
-                              alignment: Alignment.centerLeft),
+                          style: ElevatedButton.styleFrom(
+                            surfaceTintColor: Colors.white,
+                            backgroundColor: Colors.white,
+                            alignment: Alignment.centerLeft,
+                          ),
                           icon: const Icon(Icons.mail_outline),
                           label: const Text('Email: diemdaochieu@gmail.com'),
                           onPressed: () {},

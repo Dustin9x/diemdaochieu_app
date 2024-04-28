@@ -50,8 +50,31 @@ class _TabsScreenState extends ConsumerState<TabsScreen> {
   void initState() {
     // TODO: implement initState
     loginState();
+    // fetchNotiCount();
     super.initState();
   }
+
+  // Future<void> fetchNotiCount() async {
+  //   var listNotiCount = ref.watch(getNotiCountProvider).value;
+  //   setState(() {
+  //     if (listNotiCount != null) {
+  //       for (var item in listNotiCount) {
+  //         if (item['type'] == "ALL") {
+  //           totalNoti = item['total'];
+  //         }
+  //         if (item['type'] == "REALTIME") {
+  //           totalRealtime = item['total'];
+  //         }
+  //         if (item['type'] == "GENERAL") {
+  //           totalGeneral = item['total'];
+  //         }
+  //         if (item['type'] == "BUY_SALE") {
+  //           totalBuysale = item['total'];
+  //         }
+  //       }
+  //     }
+  //   });
+  // }
 
   int totalNoti = 0;
   int totalRealtime = 0;
@@ -109,7 +132,7 @@ class _TabsScreenState extends ConsumerState<TabsScreen> {
 
     return Scaffold(
       body: activePage,
-      extendBody: true,
+      //extendBody: true,
       bottomNavigationBar: Container(
         decoration: const BoxDecoration(
           borderRadius: BorderRadius.only(
