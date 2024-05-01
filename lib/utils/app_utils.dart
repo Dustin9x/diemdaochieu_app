@@ -1,3 +1,4 @@
+import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart';
@@ -27,6 +28,25 @@ class AppUtils {
     if (interval >= 1) return '$interval phút';
 
     return '${(seconds).floor()} giây';
+  }
+
+  static Widget dateNoti(String notiDate, bool isPremium) {
+    String date = notiDate;
+    if(isPremium && date != ''){
+      date = DateFormat("dd/MM/yyyy").format(DateTime.parse(notiDate));
+    }
+    return Row(
+      children: [
+        const Icon(FluentIcons.circle_12_filled,
+            color: Colors.orangeAccent, size: 8),
+        Text(
+          " $date",
+          style: const TextStyle(
+              color: Colors.orangeAccent,
+              fontWeight: FontWeight.bold),
+        ),
+      ],
+    );
   }
 
 

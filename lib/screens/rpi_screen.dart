@@ -1,3 +1,4 @@
+import 'package:appbar_animated/appbar_animated.dart';
 import 'package:diemdaochieu_app/modal/premium_request.dart';
 import 'package:diemdaochieu_app/services/RPIServices.dart';
 import 'package:diemdaochieu_app/services/articleServices.dart';
@@ -7,7 +8,9 @@ import 'package:diemdaochieu_app/widgets/rpi/vn30_rpi_tab.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'dart:convert' show json;
+import 'dart:convert' show json, utf8;
+import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
+import 'package:http/http.dart' as http;
 
 class RPIScreen extends ConsumerStatefulWidget {
   const RPIScreen({super.key});
@@ -18,6 +21,11 @@ class RPIScreen extends ConsumerStatefulWidget {
 
 class _RPIScreenState extends ConsumerState<RPIScreen>
     with SingleTickerProviderStateMixin {
+  var storage = const FlutterSecureStorage();
+  static const _pageSize = 5;
+  var _activeCallbackIdentity;
+  final PagingController<int, dynamic> _pagingController =
+      PagingController(firstPageKey: 5);
   late TabController _tabController;
 
   @override
@@ -25,72 +33,74 @@ class _RPIScreenState extends ConsumerState<RPIScreen>
     super.initState();
     _tabController = TabController(length: 2, vsync: this);
     _tabController.addListener(_handleTabSelection);
+    _pagingController.addPageRequestListener((pageKey) {
+      _fetchPage(pageKey);
+    });
   }
 
   @override
   void dispose() {
     _tabController.dispose();
+    _pagingController.dispose();
+    _activeCallbackIdentity = null;
     super.dispose();
   }
 
-  Future<dynamic> getData() async {
-    return ref.watch(rpiProvider).getRPI();
-  }
-
-  Future<dynamic> getRPIArticles(size) async {
-    return ref.watch(articleProvider).getRPIArticles(size);
-  }
-
-  riskNameFromRpi(double rpi) {
-    switch (rpi) {
-      case (>= 0 && <= 0.99):
-        return 'Cơ hội';
-      case (>= 1 && <= 1.49):
-        return 'Rủi ro thấp';
-      case (>= 1.5 && <= 3.49):
-        return 'Trung tính';
-      case (>= 3.5 && <= 3.99):
-        return 'Rủi ro';
-      case (>= 4 && <= 5):
-        return 'Rủi ro cao';
-      default:
-        return 'Bình thường';
+  Future<void> _fetchPage(int pageKey) async {
+    final callbackIdentity = Object();
+    _activeCallbackIdentity = callbackIdentity;
+    try {
+      final newItems = await http.get(Uri.parse(
+          'https://api-prod.diemdaochieu.com/article/client/posts-by-category?id=13&page=0&size=$pageKey'));
+      if (callbackIdentity == _activeCallbackIdentity) {
+        pageKey = pageKey + _pageSize;
+        final result = json.decode(utf8.decode(newItems.bodyBytes))['data'];
+        _pagingController.appendPage(result, pageKey);
+      }
+    } catch (error) {
+      if (callbackIdentity == _activeCallbackIdentity) {
+        _pagingController.error = error;
+      }
     }
   }
 
-  var storage = const FlutterSecureStorage();
+
 
   _handleTabSelection() async {
     if (_tabController.indexIsChanging) {
-      if (_tabController.index == 1){
+      if (_tabController.index == 1) {
         var userInfo = await storage.read(key: 'user');
-        if(userInfo != null){
+        if (userInfo != null) {
           var userPackage = json.decode(userInfo);
-          bool isPremium = userPackage['permissions'].contains('WEB_CLIENT') || userPackage['permissions'].contains('PAID_ARTICLE') || !userPackage['packages'].contains('FREE');
-          if(isPremium == false){
-            showDialog(context: context, builder: (BuildContext dialogContext){
-              return const PremiumRequestModal();
-            });
+          bool isPremium = userPackage['permissions'].contains('WEB_CLIENT') ||
+              userPackage['permissions'].contains('PAID_ARTICLE') ||
+              !userPackage['packages'].contains('FREE');
+          if (isPremium == false) {
+            showDialog(
+                context: context,
+                builder: (BuildContext dialogContext) {
+                  return const PremiumRequestModal();
+                });
             _tabController.index = 0;
-          }else{
+          } else {
             setState(() {});
           }
-        }else{
-          showDialog(context: context, builder: (BuildContext dialogContext){
-            return const PremiumRequestModal();
-          });
+        } else {
+          showDialog(
+              context: context,
+              builder: (BuildContext dialogContext) {
+                return const PremiumRequestModal();
+              });
           _tabController.index = 0;
         }
-      }else{
+      } else {
         setState(() {});
       }
-
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    int size = 5;
     Container myTab(String text) {
       return Container(
         height: 30,
@@ -100,66 +110,67 @@ class _RPIScreenState extends ConsumerState<RPIScreen>
     }
 
     return Scaffold(
+      extendBodyBehindAppBar: false,
       backgroundColor: const Color.fromARGB(10, 0, 0, 0),
       appBar: AppBar(
         title: const Text('Chỉ Báo RPI'),
         surfaceTintColor: Colors.white,
         backgroundColor: Colors.transparent,
       ),
-      body: ListView(
-        children: <Widget>[
-          TabBar(
-              controller: _tabController,
-              indicator: BoxDecoration(
-                  borderRadius: BorderRadius.circular(40), color: Colors.white),
-              isScrollable: true,
-              overlayColor: MaterialStateProperty.all(Colors.transparent),
-              padding: EdgeInsets.zero,
-              indicatorPadding: EdgeInsets.zero,
-              labelPadding: const EdgeInsets.symmetric(horizontal: 8),
-              labelStyle: const TextStyle(fontWeight: FontWeight.bold),
-              unselectedLabelStyle:
-                  const TextStyle(fontWeight: FontWeight.normal),
-              tabAlignment: TabAlignment.start,
-              dividerColor: Colors.transparent,
-              tabs: [
-                myTab('Chỉ Báo RPI'),
-                myTab('Cảnh Báo Đảo Chiều VN30'),
-              ]),
-          Center(
-            child: [
-              const RPITab(),
-              const VN30RPITab()
-            ][_tabController.index],
-          ),
-          const SizedBox(height: 12),
-          const Padding(
-            padding: EdgeInsets.symmetric(horizontal: 10),
-            child: Text('Serie Điểm Đảo Chiều',style: TextStyle(
-              fontSize: 16,
-              fontWeight: FontWeight.bold
-            ),),
-          ),
-          FutureBuilder(
-              future: getRPIArticles(size),
-              builder: (context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  return const Center(child: CircularProgressIndicator());
-                }
-                if (!snapshot.hasData) {
-                  getData();
-                }
-                List<dynamic> rpiArticles =
-                    snapshot.data.map((e) => e).toList();
-                // return Articles(article: rpiArticles[0]);
-                return Column(
-                  children: [
-                    for (int i = 0; i < rpiArticles.length; i++)
-                      Articles(article: rpiArticles[i])
-                  ],
-                );
-              })
-        ],
+      body: PagedListView<int, dynamic>(
+        padding: EdgeInsets.zero,
+        pagingController: _pagingController,
+        builderDelegate: PagedChildBuilderDelegate<dynamic>(
+          itemBuilder: (context, item, index) {
+            if (index == 0) {
+              return Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  TabBar(
+                      controller: _tabController,
+                      indicator: BoxDecoration(
+                          borderRadius: BorderRadius.circular(40),
+                          color: Colors.white),
+                      isScrollable: true,
+                      overlayColor:
+                          MaterialStateProperty.all(Colors.transparent),
+                      padding: EdgeInsets.zero,
+                      indicatorPadding: EdgeInsets.zero,
+                      labelPadding: const EdgeInsets.symmetric(horizontal: 8),
+                      labelStyle: const TextStyle(fontWeight: FontWeight.bold),
+                      unselectedLabelStyle:
+                          const TextStyle(fontWeight: FontWeight.normal),
+                      tabAlignment: TabAlignment.start,
+                      dividerColor: Colors.transparent,
+                      tabs: [
+                        myTab('Chỉ Báo RPI'),
+                        myTab('Cảnh Báo Đảo Chiều VN30'),
+                      ]),
+                  Center(
+                    child: [
+                      const RPITab(),
+                      const VN30RPITab()
+                    ][_tabController.index],
+                  ),
+                  const Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 10),
+                    child: Column(
+                      children: [
+                        Text(
+                          'Serie Điểm Đảo Chiều',
+                          style: TextStyle(
+                              fontSize: 16, fontWeight: FontWeight.bold),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Articles(article: item)
+                ],
+              );
+            }
+            return Articles(article: item);
+          },
+        ),
       ),
     );
   }

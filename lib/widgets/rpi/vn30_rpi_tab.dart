@@ -20,44 +20,45 @@ class _VN30RPITabState extends ConsumerState<VN30RPITab> {
   void initState() {
     super.initState();
     if (DateTime.now().weekday == 7) {
-      _selectedDate = DateFormat('yyyy-MM-dd').format(DateTime.now().subtract(const Duration(days: 2)));
+      _selectedDate = DateFormat('yyyy-MM-dd')
+          .format(DateTime.now().subtract(const Duration(days: 2)));
     } else if (DateTime.now().weekday == 6) {
-      _selectedDate = DateFormat('yyyy-MM-dd').format(DateTime.now().subtract(const Duration(days: 1)));
+      _selectedDate = DateFormat('yyyy-MM-dd')
+          .format(DateTime.now().subtract(const Duration(days: 1)));
     } else {
       _selectedDate = DateFormat('yyyy-MM-dd').format(DateTime.now());
     }
   }
 
   void _onSelectionChanged(DateRangePickerSelectionChangedArgs args) {
-    try{
+    try {
       setState(() {
         if (args.value is DateTime) {
           _selectedDate = DateFormat('yyyy-MM-dd').format(args.value);
           ref.watch(rpiProvider).getVN30RPIHisroty(_selectedDate);
         }
       });
-    }catch (e){
-      print(e.toString());
+    } catch (e) {
+      throw (e.toString());
     }
-
   }
 
   Widget getDateRangePicker() {
     return Card(
       child: SfDateRangePicker(
-          backgroundColor: Colors.white,
-          showActionButtons: true,
-          onSubmit: (value) {
-            Navigator.pop(context);
-          },
-          cancelText: 'Đặt lại',
-          confirmText: 'Xác nhận',
-          rangeSelectionColor: Colors.amber,
-          selectionColor: Colors.amber,
-          view: DateRangePickerView.month,
-          onSelectionChanged: _onSelectionChanged,
-          selectionMode: DateRangePickerSelectionMode.single,
-          initialSelectedDate: DateTime.tryParse(_selectedDate),
+        backgroundColor: Colors.white,
+        showActionButtons: true,
+        onSubmit: (value) {
+          Navigator.pop(context);
+        },
+        cancelText: 'Đặt lại',
+        confirmText: 'Xác nhận',
+        rangeSelectionColor: Colors.amber,
+        selectionColor: Colors.amber,
+        view: DateRangePickerView.month,
+        onSelectionChanged: _onSelectionChanged,
+        selectionMode: DateRangePickerSelectionMode.single,
+        initialSelectedDate: DateTime.tryParse(_selectedDate),
       ),
     );
   }
@@ -91,8 +92,8 @@ class _VN30RPITabState extends ConsumerState<VN30RPITab> {
     text = data[value.toInt()];
     return SideTitleWidget(
       axisSide: meta.axisSide,
-      child: Text(text, style: style),
       angle: 55,
+      child: Text(text, style: style),
     );
   }
 
@@ -147,11 +148,17 @@ class _VN30RPITabState extends ConsumerState<VN30RPITab> {
               },
               child: Row(
                 mainAxisSize: MainAxisSize.min,
-
                 children: [
-                  Text(_selectedDate, style: TextStyle(fontSize: 10),),
+                  Text(
+                    DateFormat("dd-MM-yyyy")
+                        .format(DateTime.parse(_selectedDate)),
+                    style: const TextStyle(fontSize: 10),
+                  ),
                   const SizedBox(width: 8),
-                  const Icon(EneftyIcons.calendar_outline, size: 15,)
+                  const Icon(
+                    EneftyIcons.calendar_outline,
+                    size: 15,
+                  )
                 ],
               ),
             ),
@@ -167,8 +174,10 @@ class _VN30RPITabState extends ConsumerState<VN30RPITab> {
                   if (!snapshot.hasData) {
                     getData(_selectedDate);
                   }
-                  if(snapshot.data['data'] == null ){
-                    return const Center(child: Text('Xin lỗi, không có data, vui lòng chọn ngày khác'));
+                  if (snapshot.data['data'] == null) {
+                    return const Center(
+                        child: Text(
+                            'Xin lỗi, không có data, vui lòng chọn ngày khác'));
                   }
                   Map<String, dynamic> response = snapshot.data['data'];
                   final sortedEntries = response.entries.toList()
@@ -198,7 +207,25 @@ class _VN30RPITabState extends ConsumerState<VN30RPITab> {
                             ),
                           ),
                         ),
-                        barTouchData: BarTouchData(enabled: true),
+                        barTouchData: BarTouchData(
+                            enabled: true,
+                            touchTooltipData: BarTouchTooltipData(
+                                tooltipPadding: const EdgeInsets.all(6.0),
+                                fitInsideHorizontally: true,
+                                fitInsideVertically: true,
+                                getTooltipColor: (touchedSpot) => Colors.white,
+                                tooltipBorder: const BorderSide(
+                                    color: Colors.grey, width: 1),
+                                getTooltipItem:
+                                    (group, groupIndex, rod, rodIndex) {
+                                  return BarTooltipItem(
+                                    '${vn30RpiHistoryData.keys.toList()[groupIndex]} \n RPI: ${rod.toY}',
+                                    const TextStyle(
+                                        color: Colors.black87,
+                                        fontSize: 13,
+                                        backgroundColor: Colors.white),
+                                  );
+                                })),
                         borderData: FlBorderData(show: false),
                         gridData: FlGridData(
                           show: true,

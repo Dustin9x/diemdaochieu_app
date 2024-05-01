@@ -3,6 +3,7 @@ import 'package:diemdaochieu_app/providers/notificationProvider.dart';
 import 'package:diemdaochieu_app/screens/archived_articles_screen.dart';
 import 'package:diemdaochieu_app/screens/rpi_screen.dart';
 import 'package:diemdaochieu_app/utils/app_utils.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:enefty_icons/enefty_icons.dart';
@@ -39,19 +40,25 @@ class _TabsScreenState extends ConsumerState<TabsScreen> {
       });
     }
   }
-  
-
 
   loginState() async {
     isLoggedIn = await AppUtils.checkLoginState();
   }
 
+  void setUpPushNotifications() async {
+    final fcm = FirebaseMessaging.instance;
+    await fcm.requestPermission();
+    final tokenNotification = fcm.getToken();
+
+  }
+
   @override
   void initState() {
     // TODO: implement initState
-    loginState();
     // fetchNotiCount();
     super.initState();
+    loginState();
+    setUpPushNotifications();
   }
 
   // Future<void> fetchNotiCount() async {
@@ -174,8 +181,7 @@ class _TabsScreenState extends ConsumerState<TabsScreen> {
                           color: Colors.grey.withOpacity(0.2),
                           spreadRadius: 5,
                           blurRadius: 7,
-                          offset:
-                              const Offset(0, 3), // changes position of shadow
+                          offset: const Offset(0, 3), // changes position of shadow
                         ),
                       ],
                     ),
@@ -205,8 +211,7 @@ class _TabsScreenState extends ConsumerState<TabsScreen> {
                           color: Colors.grey.withOpacity(0.2),
                           spreadRadius: 5,
                           blurRadius: 7,
-                          offset:
-                              const Offset(0, 3), // changes position of shadow
+                          offset: const Offset(0, 3), // changes position of shadow
                         ),
                       ],
                     ),

@@ -6,10 +6,39 @@ class Notifications extends StatelessWidget {
 
   final dynamic notification;
 
+  Widget renderNoti(notification){
+    if(notification['type'] != 'GENERAL' || notification['target'] != 'ALL') {
+      return Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(notification['title'],
+              style: const TextStyle(fontWeight: FontWeight.bold)),
+          if (notification['type'] != 'GENERAL')
+            const SizedBox(width: 8),
+          Flexible(
+            child: Text(
+              notification['content'],
+              overflow: TextOverflow.ellipsis,
+              softWrap: true,
+              maxLines: 2,
+            ),
+          ),
+        ],
+      );
+    }
+    return Text(
+      notification['title'],
+      overflow: TextOverflow.ellipsis,
+      softWrap: true,
+      maxLines: 2,
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
       margin: const EdgeInsets.only(bottom: 8),
+      width: double.infinity,
       child: TextButton(
         style: TextButton.styleFrom(
             backgroundColor: Colors.grey.withOpacity(0.2),
@@ -23,30 +52,7 @@ class Notifications extends StatelessWidget {
                     notification['articleId']),
               )));
         },
-        child: notification['type'] != 'GENERAL'
-            ? Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(notification['title'],
-                      style: const TextStyle(fontWeight: FontWeight.bold)),
-                  if (notification['type'] != 'GENERAL')
-                    const SizedBox(width: 8),
-                  Flexible(
-                    child: Text(
-                      notification['content'],
-                      overflow: TextOverflow.ellipsis,
-                      softWrap: true,
-                      maxLines: 2,
-                    ),
-                  ),
-                ],
-              )
-            : Text(
-                notification['title'],
-                overflow: TextOverflow.ellipsis,
-                softWrap: true,
-                maxLines: 2,
-              ),
+        child: renderNoti(notification)
       ),
     );
   }

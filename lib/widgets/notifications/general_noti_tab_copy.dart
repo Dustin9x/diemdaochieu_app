@@ -5,19 +5,19 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 
-class BuySellNoti extends ConsumerWidget {
-  const BuySellNoti({super.key});
+class GeneralNoti extends ConsumerWidget {
+  const GeneralNoti({super.key});
 
   @override
   Widget build(BuildContext context, ref) {
     int size = 25;
     var data;
     getData(size) async {
-      data = await ref.watch(notificationProvider).getNotificationBuySell(size);
+      data = await ref.watch(notificationProvider).getNotificationGeneral(size);
     }
 
     Future<void> onRefresh() {
-      return ref.refresh(notificationProvider).getNotificationBuySell(size);
+      return ref.refresh(notificationProvider).getNotificationGeneral(size);
     }
 
     groupByDay(List<dynamic> items) {
@@ -40,15 +40,15 @@ class BuySellNoti extends ConsumerWidget {
           }
           List<dynamic> notiList = data.map((e) => e).toList();
           final finalData = groupByDay(notiList);
-          return Container(
-            margin: const EdgeInsets.all(10),
-            padding: const EdgeInsets.all(10),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(20),
-              color: Colors.white,
-            ),
-            child: RefreshIndicator(
-              onRefresh: onRefresh,
+          return RefreshIndicator(
+            onRefresh: onRefresh,
+            child: Container(
+              margin: const EdgeInsets.all(10),
+              padding: const EdgeInsets.all(10),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(20),
+                color: Colors.white,
+              ),
               child: SingleChildScrollView(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -56,7 +56,7 @@ class BuySellNoti extends ConsumerWidget {
                     Column(
                         crossAxisAlignment: CrossAxisAlignment.stretch,
                         children: finalData.entries.map((entry) {
-                          String date = DateFormat("dd/MM/yyyy").format(
+                          String date = DateFormat("dd-MM-yyyy").format(
                             DateTime.parse(entry.key),
                           );
                           final value = entry.value;

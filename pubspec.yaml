@@ -55,8 +55,12 @@ dependencies:
   infinite_scroll_pagination: ^4.0.0
   image_network: ^2.5.6
   url_launcher: ^6.2.5
-  flutter_native_splash: ^2.4.0
   html: ^0.15.4
+  flutter_native_splash: ^2.4.0
+  firebase_core: ^2.30.1
+  firebase_auth: ^4.19.4
+  firebase_messaging: ^14.9.1
+  google_sign_in: ^6.2.1
 
 dev_dependencies:
   flutter_test:
@@ -74,10 +78,11 @@ dev_dependencies:
   riverpod_lint: ^2.3.9
 
 
-#flutter_native_splash:
-#  color: "#FFC601"
-#  image: assets/images/icon.png
-#  fullscreen: true
+flutter_native_splash:
+  color: "#FFC601"
+  image: assets/images/splashscreen.svg
+  background_image: assets/images/splashscreen.svg
+  fullscreen: true
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
@@ -95,8 +100,10 @@ flutter:
      - assets/images/loginbg.svg
      - assets/images/promo.jpg
      - assets/images/icon.png
-     - assets/images/splashscreen.png
-     - assets/images/darksplashscreen.png
+     - assets/images/splashscreen.svg
+     - assets/images/darksplashscreen.svg
+     - assets/images/google.png
+     - assets/images/facebook.png
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see

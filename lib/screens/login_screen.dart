@@ -3,12 +3,15 @@ import 'package:diemdaochieu_app/screens/forget_pw_screen.dart';
 import 'package:diemdaochieu_app/screens/tabs.dart';
 import 'dart:convert' show json, utf8;
 import 'package:diemdaochieu_app/widgets/my_elevated_button.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_toggle_tab/flutter_toggle_tab.dart';
 import 'package:flutter_toggle_tab/helper.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:http/http.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key, required this.tabIndex});
@@ -72,6 +75,7 @@ class _LoginScreenState extends State<LoginScreen> {
         width: double.maxFinite,
         height: double.maxFinite,
         fit: BoxFit.cover,
+
       ),
       Center(
           child: SingleChildScrollView(
@@ -107,8 +111,9 @@ class _LoginScreenState extends State<LoginScreen> {
                 // width in percent
                 width: 60,
                 borderRadius: 30,
-                height: 40,
+                height: 50,
                 selectedIndex: _tabIndexBasicToggle.value,
+                marginSelected: const EdgeInsets.all(6.0),
                 selectedBackgroundColors: const [
                   Colors.orangeAccent,
                   Color.fromARGB(255, 251, 196, 2),
@@ -197,7 +202,7 @@ class _LoginScreenState extends State<LoginScreen> {
         });
       }
     } catch (e) {
-      print(e.toString());
+      throw e.toString();
     }
   }
 
@@ -369,16 +374,14 @@ class _LoginScreenState extends State<LoginScreen> {
 
   var _enteredEmail = '';
   var _enteredPassword = '';
+  final fcm = FirebaseMessaging.instance;
 
   void _submitLogin() async {
     final isValid = _formKeyLogin.currentState!.validate();
-
     if (!isValid) {
       return;
     }
-
     _formKeyLogin.currentState!.save();
-
     const baseUrl = 'https://api-prod.diemdaochieu.com/auth/signin';
     const storage = FlutterSecureStorage();
     Map<String, String> jsonBody = {
@@ -392,16 +395,19 @@ class _LoginScreenState extends State<LoginScreen> {
         'Content-Type': 'application/json',
       };
 
-      Response response = await post(Uri.parse(baseUrl),
-          headers: requestHeaders, body: json.encode(jsonBody));
+      Response response = await post(Uri.parse(baseUrl), headers: requestHeaders, body: json.encode(jsonBody));
       final message = json.decode(utf8.decode(response.bodyBytes))['message'];
 
       if (response.statusCode == 200) {
         final result = json.decode(utf8.decode(response.bodyBytes))['data'];
-        await storage.write(key: 'jwt', value: result['accessToken']);
+        String accessToken = result['accessToken'];
+        await storage.write(key: 'jwt', value: accessToken);
         await storage.write(key: 'user', value: json.encode(result['user']));
-        Navigator.of(context).
-        pushAndRemoveUntil(MaterialPageRoute(builder: (ctx) => const TabsScreen()),(Route<dynamic> route) => false);
+        await fcm.requestPermission();
+        final String? tokenNotification = await fcm.getToken();
+        print('fcmtoken ${tokenNotification!}');
+        _subscribeFirebase(accessToken,tokenNotification!.toString());
+        Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (ctx) => const TabsScreen()),(Route<dynamic> route) => false);
       }else{
         showDialog(context: context, builder: (BuildContext dialogContext){
           return AlertDialog(
@@ -422,7 +428,45 @@ class _LoginScreenState extends State<LoginScreen> {
     }
   }
 
-  Widget formLogin() => Form(
+  void _subscribeFirebase(String userToken, String fcmToken) async {
+    const baseUrl = 'https://api-prod.diemdaochieu.com/user/settings/update';
+    const storage = FlutterSecureStorage();
+    Map<String, dynamic> jsonBody = {
+      'fcmToken': fcmToken,
+      'receiveNotification': true
+    };
+    try {
+      Map<String, String> requestHeaders = {
+        'x-ddc-token': userToken,
+        'platform': 'ANDROID',
+        'Content-Type': 'application/json',
+      };
+      Response response = await post(Uri.parse(baseUrl), headers: requestHeaders, body: json.encode(jsonBody));
+      if (response.statusCode == 200) {
+        await storage.write(key: "TOKEN_NOTIFICATION", value: fcmToken.toString());
+      }
+    } catch (e) {
+      print(e.toString());
+    }
+  }
+
+  final GoogleSignIn _googleSignIn = GoogleSignIn(
+    scopes: <String>[
+      'email',
+      'https://www.googleapis.com/auth/contacts.readonly',
+    ],
+  );
+
+  Future<void> _handleSignIn() async {
+    try {
+      var userInfo = await _googleSignIn.signIn();
+      print(userInfo);
+    } catch (error) {
+      print(error);
+    }
+  }
+
+Widget formLogin() => Form(
         key: _formKeyLogin,
         child: Column(
           children: [
@@ -510,6 +554,32 @@ class _LoginScreenState extends State<LoginScreen> {
                   fontSize: 16,
                 ),
               ),
+            ),
+            const SizedBox(height: 36),
+            const Text('hoặc',style: TextStyle(
+              fontSize: 13,
+              color: Colors.grey
+            ),),
+            const SizedBox(height: 12),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Image.asset(
+                  'assets/images/facebook.png',
+                  width: 45,
+                  height: 45,
+                ),
+                const SizedBox(width: 18),
+                InkWell(
+                  onTap: _handleSignIn, // Image tapped
+                  splashColor: Colors.white10, // Splash color over image
+                  child: Image.asset(
+                    'assets/images/google.png',
+                    width: 45,
+                    height: 45,
+                  ),
+                )
+              ],
             ),
           ],
         ),

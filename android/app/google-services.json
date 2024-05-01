@@ -1,0 +1,82 @@
+{
+  "project_info": {
+    "project_number": "998832064900",
+    "project_id": "ddcproject-f1c8c",
+    "storage_bucket": "ddcproject-f1c8c.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:998832064900:android:895f2c5565cd71a25ab5d1",
+        "android_client_info": {
+          "package_name": "com.ddcproject"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "998832064900-5m8b2ikt59in2hb22dj5b9jqr7ahihik.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBEWln0a0WDYnTR6cezaSr_neUOQ_QS8aQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "998832064900-5m8b2ikt59in2hb22dj5b9jqr7ahihik.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "998832064900-qrm4sq8d3nehvk1rat5fev274ttabebm.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.ddcproject.mobile"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:998832064900:android:7c08f886ab141b765ab5d1",
+        "android_client_info": {
+          "package_name": "com.example.diemdaochieu_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "998832064900-5m8b2ikt59in2hb22dj5b9jqr7ahihik.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBEWln0a0WDYnTR6cezaSr_neUOQ_QS8aQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "998832064900-5m8b2ikt59in2hb22dj5b9jqr7ahihik.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "998832064900-qrm4sq8d3nehvk1rat5fev274ttabebm.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.ddcproject.mobile"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

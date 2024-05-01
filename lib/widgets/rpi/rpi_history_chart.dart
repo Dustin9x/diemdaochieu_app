@@ -56,7 +56,7 @@ class _RPIHistoryChartState extends ConsumerState<RPIHistoryChart> {
         }
       });
     }catch (e){
-      print(e.toString());
+      print (e.toString());
     }
 
   }
@@ -71,7 +71,9 @@ class _RPIHistoryChartState extends ConsumerState<RPIHistoryChart> {
         },
         cancelText: 'Đặt lại',
         confirmText: 'Xác nhận',
-        rangeSelectionColor: Colors.amber.withOpacity(0.2),
+        rangeSelectionColor: const Color.fromARGB(255, 237, 242, 247),
+        startRangeSelectionColor: Colors.amber,
+        endRangeSelectionColor: Colors.amber,
         selectionColor: Colors.amber,
         view: DateRangePickerView.month,
         onSelectionChanged: _onSelectionChanged,
@@ -130,7 +132,6 @@ class _RPIHistoryChartState extends ConsumerState<RPIHistoryChart> {
                 },
                 child: Row(
                       mainAxisSize: MainAxisSize.min,
-
                       children: [
                         Text(_range, style: TextStyle(fontSize: 10),),
                         const SizedBox(width: 8),
@@ -163,14 +164,15 @@ class _RPIHistoryChartState extends ConsumerState<RPIHistoryChart> {
     const style = TextStyle(
       fontSize: 10,
     );
-    Widget text;
-    text = Text(rpiHistoryData[value.toInt()]['date'], style: style);
 
     return SideTitleWidget(
       space: meta.appliedInterval,
       axisSide: meta.axisSide,
       angle: 75,
-      child: text,
+      child: Padding(
+        padding: const EdgeInsets.only(right: 6, top: 6),
+        child: Text(DateFormat("dd-MM-yy").format(DateTime.parse(rpiHistoryData[value.toInt()]['date'])), style: style),
+      ),
     );
   }
 
@@ -217,7 +219,6 @@ class _RPIHistoryChartState extends ConsumerState<RPIHistoryChart> {
       default:
         return Container();
     }
-
     return Text(text, style: style, textAlign: TextAlign.left);
   }
 
@@ -230,7 +231,7 @@ class _RPIHistoryChartState extends ConsumerState<RPIHistoryChart> {
               String rpiDate = '';
               return value.map((barSpot) {
                 for (int i = 0; i < rpiHistoryData.length; i++) {
-                  rpiDate = rpiHistoryData[barSpot.spotIndex]['date'];
+                  rpiDate = DateFormat("dd-MM-yyyy").format(DateTime.parse(rpiHistoryData[barSpot.spotIndex]['date']));
                 }
                 if (first) {
                   first = false;
@@ -259,7 +260,11 @@ class _RPIHistoryChartState extends ConsumerState<RPIHistoryChart> {
               }).toList();
             },
             getTooltipColor: (touchedSpot) => Colors.white,
-            tooltipBorder: const BorderSide(color: Colors.grey, width: 1)),
+            tooltipBorder: const BorderSide(color: Colors.grey, width: 1),
+          fitInsideHorizontally: true,
+          fitInsideVertically: true,
+          tooltipPadding: const EdgeInsets.all(6.0)
+        ),
       ),
       gridData: FlGridData(
         show: true,
@@ -290,15 +295,15 @@ class _RPIHistoryChartState extends ConsumerState<RPIHistoryChart> {
         bottomTitles: AxisTitles(
           sideTitles: SideTitles(
             showTitles: true,
-            reservedSize: 40,
-            interval: 2,
+            reservedSize: 30,
+            interval: 4,
             getTitlesWidget: bottomTitleWidgets,
           ),
         ),
         leftTitles: AxisTitles(
           sideTitles: SideTitles(
             showTitles: true,
-            interval: 0.5,
+            interval: 1,
             getTitlesWidget: leftTitleWidgets,
             reservedSize: 20,
           ),
@@ -306,7 +311,7 @@ class _RPIHistoryChartState extends ConsumerState<RPIHistoryChart> {
       ),
       borderData: FlBorderData(
         show: true,
-        border: Border.all(color: const Color(0xff37434d)),
+        border: Border.all(color: Colors.grey.withOpacity(0.3)),
       ),
       extraLinesData: ExtraLinesData(
         horizontalLines: [
@@ -339,15 +344,6 @@ class _RPIHistoryChartState extends ConsumerState<RPIHistoryChart> {
           dotData: const FlDotData(
             show: false,
           ),
-          belowBarData: BarAreaData(
-            show: true,
-            gradient: LinearGradient(
-              colors: amberGradientColors,
-              begin: Alignment.topCenter,
-              end: Alignment.bottomCenter,
-              stops: [0, 0.3, 0.5],
-            ),
-          ),
         ),
         LineChartBarData(
           spots: [
@@ -360,15 +356,6 @@ class _RPIHistoryChartState extends ConsumerState<RPIHistoryChart> {
           isStrokeCapRound: true,
           dotData: const FlDotData(
             show: false,
-          ),
-          belowBarData: BarAreaData(
-            show: true,
-            gradient: LinearGradient(
-              colors: blackGradientColors,
-              begin: Alignment.topCenter,
-              end: Alignment.bottomCenter,
-              stops: [0, 0.3, 0.5],
-            ),
           ),
         ),
       ],

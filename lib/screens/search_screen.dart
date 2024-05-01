@@ -1,10 +1,13 @@
 import 'dart:convert' show json, utf8;
+import 'package:diemdaochieu_app/utils/app_utils.dart';
+import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:http/http.dart' as http;
 import 'package:diemdaochieu_app/widgets/articles.dart';
 import 'package:diemdaochieu_app/widgets/notifications/notification_item.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:intl/intl.dart';
 var storage = const FlutterSecureStorage();
 
 class SearchScreen extends ConsumerStatefulWidget {
@@ -22,6 +25,7 @@ class _SearchScreenState extends ConsumerState<SearchScreen>
   void initState() {
     super.initState();
     _tabController = TabController(length: 3, vsync: this);
+    getUserInfo();
   }
 
   @override
@@ -72,6 +76,18 @@ class _SearchScreenState extends ConsumerState<SearchScreen>
       });
     } catch (error) {
       rethrow;
+    }
+  }
+
+  bool isPremium = false;
+
+  void getUserInfo() async{
+    if (await storage.read(key: "user") != null){
+    var userInfo = await storage.read(key: 'user');
+    var userPackage = json.decode(userInfo!);
+    setState(() {
+      isPremium = userPackage['permissions'].contains('WEB_CLIENT') || userPackage['permissions'].contains('PAID_ARTICLE') || !userPackage['packages'].contains('FREE');
+    });
     }
   }
 
@@ -156,8 +172,13 @@ class _SearchScreenState extends ConsumerState<SearchScreen>
                             : ListView.builder(
                                 itemCount: notiData?.length,
                                 itemBuilder: (ctx, index) {
-                                  return Notifications(
-                                      notification: notiData?[index]);
+                                  return Column(
+                                    children: [
+                                      const SizedBox(height: 4),
+                                      AppUtils.dateNoti(notiData?[index]['pushFinishAt'], isPremium),
+                                      Notifications(notification: notiData?[index]),
+                                    ],
+                                  );
                                 },
                               ),
               ),
