@@ -1,6 +1,6 @@
 import 'package:diemdaochieu_app/utils/app_utils.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:diemdaochieu_app/screens/article_detail.dart';
+import 'package:diemdaochieu_app/screens/article/article_detail.dart';
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:enefty_icons/enefty_icons.dart';

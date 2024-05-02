@@ -1,3 +1,4 @@
+import 'package:diemdaochieu_app/screens/login_form.dart';
 import 'package:diemdaochieu_app/screens/login_screen.dart';
 import 'package:diemdaochieu_app/widgets/my_elevated_button.dart';
 import 'package:flutter/material.dart';
@@ -24,52 +25,32 @@ class LoginRequestModal extends StatelessWidget {
         text: const TextSpan(
             style: TextStyle(
                 color: Colors.black87,
-                fontSize: 20,
-                fontWeight: FontWeight.bold),
-            text: "VUI LÒNG ĐĂNG NHẬP ĐỂ TIẾP TỤC NHÉ"),
+                fontSize: 16),
+            text: "Bạn hãy đăng nhập để tiếp tục nhé"),
       ),
-      content: Container(
+      content: SingleChildScrollView(
         padding: const EdgeInsets.all(14.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisSize: MainAxisSize.min,
-          children: <Widget>[
-            const SizedBox(
-              height: 10,
-            ),
-
-            Container(
-              width: double.infinity,
-              height: 60,
-              padding: const EdgeInsets.all(8.0),
-              child: MyElevatedButton(
-                borderRadius: BorderRadius.circular(40),
-                height: 50,
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-                child: const Text("Nâng Cấp / Gia Hạn Ngay"),
-              ),
-            ),
-            Container(
-              width: double.infinity,
-              height: 55,
-              padding: const EdgeInsets.all(8.0),
-              child: ElevatedButton(
-                onPressed: () {
-                  Navigator.of(context).pop();
-                  Navigator.of(context).push(MaterialPageRoute(
-                      builder: (ctx) => const LoginScreen(
-                            tabIndex: 1,
-                          )));
-                },
-                child: const Text(
-                  "Đăng Nhập",
-                ),
-              ),
-            ),
-          ],
+        child: SizedBox(
+          width: MediaQuery.of(context).size.width * 0.9,
+          child: const Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              LoginForm(),
+              // Container(
+              //   width: double.infinity,
+              //   height: 55,
+              //   padding: const EdgeInsets.all(8.0),
+              //   child: ElevatedButton(
+              //     onPressed: () {
+              //       Navigator.of(context).pop();
+              //     },
+              //     child: const Text("Quay lại"),
+              //   ),
+              // ),
+            ],
+          ),
         ),
       ),
     );

@@ -1,4 +1,5 @@
 import 'dart:convert' show json, utf8;
+import 'dart:io';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:http/http.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -9,10 +10,12 @@ var storage = const FlutterSecureStorage();
 
 class NotificationService {
 
+
+
   Future<List<dynamic>> getNotificationGeneral(int size) async {
     var userToken = await storage.read(key: 'jwt');
     Map<String, String> requestHeaders = {
-      'platform': 'ANDROID',
+      'platform': Platform.operatingSystem.toUpperCase(),
       'X-Ddc-Token': userToken.toString(),
     };
     Response response = await get(
@@ -32,7 +35,7 @@ class NotificationService {
   Future<List<dynamic>> getNotificationRealtime(int size) async {
     var userToken = await storage.read(key: 'jwt');
     Map<String, String> requestHeaders = {
-      'platform': 'ANDROID',
+      'platform': Platform.operatingSystem.toUpperCase(),
       'X-Ddc-Token': userToken.toString(),
     };
     Response response = await get(
@@ -53,7 +56,7 @@ class NotificationService {
   Future<List<dynamic>> getNotificationBuySell(int size) async {
     var userToken = await storage.read(key: 'jwt');
     Map<String, String> requestHeaders = {
-      'platform': 'ANDROID',
+      'platform': Platform.operatingSystem.toUpperCase(),
       'X-Ddc-Token': userToken.toString(),
     };
     Response response = await get(
@@ -74,7 +77,7 @@ class NotificationService {
   Future<List<dynamic>> getNotificationCount() async {
     var userToken = await storage.read(key: 'jwt');
     Map<String, String> requestHeaders = {
-      'platform': 'ANDROID',
+      'platform': Platform.operatingSystem.toUpperCase(),
       'X-Ddc-Token': userToken.toString(),
     };
     Response response = await get(

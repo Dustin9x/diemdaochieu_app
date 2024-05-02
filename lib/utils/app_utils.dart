@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -56,7 +58,7 @@ class AppUtils {
 
     const baseUrl = 'https://api-prod.diemdaochieu.com/user/get-info';
     Map<String, String> requestHeaders = {
-      'platform': 'ANDROID',
+      'platform': Platform.operatingSystem.toUpperCase(),
       'Content-Type': 'application/json',
       'x-ddc-token': userToken.toString(),
     };

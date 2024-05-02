@@ -1,4 +1,4 @@
-import 'package:diemdaochieu_app/screens/article_detail.dart';
+import 'package:diemdaochieu_app/screens/article/article_detail.dart';
 import 'package:flutter/material.dart';
 
 class Notifications extends StatelessWidget {

@@ -1,6 +1,6 @@
-import 'package:diemdaochieu_app/screens/article_detail.dart';
+import 'package:diemdaochieu_app/screens/article/article_detail.dart';
 import 'package:diemdaochieu_app/services/RPIServices.dart';
-import 'package:diemdaochieu_app/widgets/rpi/rpi_history_chart.dart';
+import 'package:diemdaochieu_app/screens/rpi/rpi_history_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gauge_indicator/gauge_indicator.dart';

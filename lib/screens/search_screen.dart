@@ -1,9 +1,10 @@
 import 'dart:convert' show json, utf8;
+import 'dart:io';
 import 'package:diemdaochieu_app/utils/app_utils.dart';
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:http/http.dart' as http;
-import 'package:diemdaochieu_app/widgets/articles.dart';
-import 'package:diemdaochieu_app/widgets/notifications/notification_item.dart';
+import 'package:diemdaochieu_app/screens/article/articles.dart';
+import 'package:diemdaochieu_app/screens/notification/notification_item.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -48,7 +49,7 @@ class _SearchScreenState extends ConsumerState<SearchScreen>
     try {
       var userToken = await storage.read(key: 'jwt');
       Map<String, String> requestHeaders = {
-        'platform': 'ANDROID',
+        'platform': Platform.operatingSystem.toUpperCase(),
         'Content-Type': 'application/json',
         'X-Ddc-Token': userToken.toString(),
       };

@@ -1,4 +1,5 @@
 import 'dart:convert' show json, utf8;
+import 'dart:io';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:http/http.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -24,7 +25,7 @@ class ArticleService {
     Response response;
     if(userToken != null){
       Map<String, String> requestHeaders = {
-        'platform': 'ANDROID',
+        'platform': Platform.operatingSystem.toUpperCase(),
         'Content-Type': 'application/json',
         'Access-Control-Allow-Origin': 'origin',
         'Access-Control-Allow-Credentials': 'true',
@@ -70,7 +71,7 @@ class ArticleService {
   Future<List<dynamic>> submitSearch(String value) async {
     var userToken = await storage.read(key: 'jwt');
     Map<String, String> requestHeaders = {
-      'platform': 'ANDROID',
+      'platform': Platform.operatingSystem.toUpperCase(),
       'Content-Type': 'application/json',
       'X-Ddc-Token': userToken.toString(),
     };
@@ -90,7 +91,7 @@ class ArticleService {
     String baseUrl = 'https://api-prod.diemdaochieu.com/article/client/like-post/$articleId';
     try {
       Map<String, String> requestHeaders = {
-        'platform': 'ANDROID',
+        'platform': Platform.operatingSystem.toUpperCase(),
         'Content-Type': 'application/json',
         'x-ddc-token': userToken.toString(),
       };

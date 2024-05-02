@@ -1,5 +1,5 @@
 import 'package:diemdaochieu_app/providers/articleProvider.dart';
-import 'package:diemdaochieu_app/widgets/premium_article_card.dart';
+import 'package:diemdaochieu_app/screens/article/premium_article_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 

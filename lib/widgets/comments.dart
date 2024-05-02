@@ -1,4 +1,5 @@
 import 'dart:convert' show json;
+import 'dart:io';
 import 'package:diemdaochieu_app/services/articleServices.dart';
 import 'package:diemdaochieu_app/widgets/my_elevated_button.dart';
 import 'package:enefty_icons/enefty_icons.dart';
@@ -98,7 +99,7 @@ class _CommentState extends ConsumerState<Comments> {
       });
       try {
         Map<String, String> requestHeaders = {
-          'platform': 'ANDROID',
+          'platform': Platform.operatingSystem.toUpperCase(),
           'Content-Type': 'application/json',
           'x-ddc-token': userToken.toString(),
         };

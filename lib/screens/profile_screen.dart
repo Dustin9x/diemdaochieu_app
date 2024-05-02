@@ -1,5 +1,5 @@
 import 'dart:convert' show json;
-import 'package:diemdaochieu_app/screens/article_detail.dart';
+import 'package:diemdaochieu_app/screens/article/article_detail.dart';
 import 'package:diemdaochieu_app/utils/app_utils.dart';
 import 'package:intl/intl.dart';
 import 'package:diemdaochieu_app/screens/login_screen.dart';
@@ -342,7 +342,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           ),
                           icon: const Icon(EneftyIcons.info_circle_outline),
                           label: const Text('Về chúng tôi'),
-                          onPressed: () {},
+                          onPressed: () {
+                            Navigator.of(context).push(MaterialPageRoute(
+                                builder: (ctx) => const ArticleDetail(
+                                    articleId: 760
+                                )));
+                          },
                         ),
                       ),
                     ],

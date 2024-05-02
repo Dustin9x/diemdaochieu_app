@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 import 'dart:math';
 import 'package:http/http.dart';
 import 'dart:typed_data';
@@ -104,7 +105,7 @@ class _ArticleDetailState extends ConsumerState<ArticleDetail> {
     Response response;
     if (userToken != null) {
       Map<String, String> requestHeaders = {
-        'platform': 'ANDROID',
+        'platform': Platform.operatingSystem.toUpperCase(),
         'Content-Type': 'application/json',
         'Access-Control-Allow-Origin': 'origin',
         'Access-Control-Allow-Credentials': 'true',

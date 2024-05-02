@@ -1,9 +1,9 @@
 import 'package:diemdaochieu_app/modal/login_request.dart';
 import 'package:diemdaochieu_app/screens/search_screen.dart';
 import 'package:diemdaochieu_app/utils/app_utils.dart';
-import 'package:diemdaochieu_app/widgets/articles.dart';
-import 'package:diemdaochieu_app/widgets/first_article.dart';
-import 'package:diemdaochieu_app/widgets/premium_articles.dart';
+import 'package:diemdaochieu_app/screens/article/articles.dart';
+import 'package:diemdaochieu_app/screens/article/first_article.dart';
+import 'package:diemdaochieu_app/screens/article/premium_articles.dart';
 import 'package:enefty_icons/enefty_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';

@@ -1,7 +1,5 @@
 import 'package:diemdaochieu_app/utils/app_utils.dart';
-import 'package:diemdaochieu_app/widgets/notifications/buysell_noti_tab.dart';
-import 'package:diemdaochieu_app/widgets/notifications/general_noti_tab.dart';
-import 'package:diemdaochieu_app/widgets/notifications/realtime_noti_tab.dart';
+import 'package:diemdaochieu_app/screens/notification/noti_tabpane.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -33,7 +31,6 @@ class _NotificationScreenState extends ConsumerState<NotificationScreen>
       setState(() {
         indexTab = _tabController.index;
       });
-    print("Selected Index: " + _tabController.index.toString());
   }
 
   @override
@@ -109,9 +106,9 @@ class _NotificationScreenState extends ConsumerState<NotificationScreen>
           body: TabBarView(
             controller: _tabController,
             children: const [
-              GeneralNoti(),
-              RealtimeNoti(),
-              BuySellNoti()
+              NotiTapane(notiType: 'GENERAL', pageSize: 35),
+              NotiTapane(notiType: 'REALTIME', pageSize: 35),
+              NotiTapane(notiType: 'BUY_SALE', pageSize: 35),
             ],
           )),
     );

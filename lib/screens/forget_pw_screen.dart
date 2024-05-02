@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:diemdaochieu_app/modal/register_success.dart';
 import 'package:diemdaochieu_app/screens/tabs.dart';
 import 'dart:convert' show json, utf8;
@@ -40,13 +42,13 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
 
     _formResetPw.currentState!.save();
 
-    String baseUrl = 'https://api-prod.diemdaochieu.com/auth/forget-password/?platform=ANDROID&email=$_enteredRegEmail';
+    String baseUrl = 'https://api-prod.diemdaochieu.com/auth/forget-password/?platform=${Platform.operatingSystem.toUpperCase()}&email=$_enteredRegEmail';
     Map<String, String> jsonBody = {
       'email': _enteredRegEmail,
     };
     try {
       Map<String, String> requestHeaders = {
-        'platform': 'ANDROID',
+        'platform': Platform.operatingSystem.toUpperCase(),
         'Content-Type': 'application/json',
       };
 
